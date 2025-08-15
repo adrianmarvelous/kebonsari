@@ -27,9 +27,14 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-    // Get the authenticated user
-    $user = $request->user();
-    dd($user); // now this will dump the user
+        // Get the authenticated user
+        $user = $request->user();
+        session([
+            'nama'    => $user->name,
+            'role_id' => $user->role_id,
+            'role'    => $user->role->name, // Assuming relationship 'role' exists
+        ]);
+
 
         return redirect()->intended(route('dashboard', absolute: false));
     }
