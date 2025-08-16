@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Roles;
 
 class UserController extends Controller
 {
@@ -12,7 +14,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::with('role')->get(); // Returns a collection of all users
+        $roles = Roles::all();
+        // dd($users);
+        return view('admin.users.index',compact('users','roles')); // Assuming you have a view for listing services
+    }
+    public function updateRole(Request $request)
+    {
+        
+        redirect('dashboard.users.index');
     }
 
     /**

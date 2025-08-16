@@ -19,6 +19,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // Grouped resource routes
     Route::resource('users', UserController::class);
+    // web.php
+    Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update_role');
+
     Route::resource('layanan', LayananController::class);
 });
 
