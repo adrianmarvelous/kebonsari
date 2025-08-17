@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Roles;
+use App\Rules\SafeInput;
 
 class UserController extends Controller
 {
@@ -21,8 +23,32 @@ class UserController extends Controller
     }
     public function updateRole(Request $request)
     {
+        $validated = $request->validate([
+            'user_id' => ['required', new SafeInput],
+            'role_id' => ['required', new SafeInput],
+        ]);
+        $user_id = $validated['user_id'];
+        $role_id = $validated['role_id'];
+
+        DB::beginTransaction();
         
-        redirect('dashboard.users.index');
+        try {
+            $user = User::findOrFail($user_id);
+            $user->role_id = $role_id;
+            $user->save();
+
+            DB::commit(); // commit transaction
+
+            return redirect()
+                ->route('users.index')
+                ->with('success', 'Role updated successfully');
+        } catch (\Exception $e) {
+            DB::rollBack(); // rollback transaction
+
+            return redirect()
+                ->route('users.index')
+                ->with('error', 'Failed to update role: ' . $e->getMessage());
+        }
     }
 
     /**

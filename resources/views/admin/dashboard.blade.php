@@ -67,6 +67,10 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
     <script src="{{ asset('assets/sneat/assets/js/config.js') }}"></script>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   </head>
   <body>
     <!-- Layout wrapper -->
@@ -146,15 +150,14 @@
               <span class="menu-header-text">Menu</span>
             </li>
             @foreach ($menus as $menu)
-              <li class="menu-item">
-                <a
-                  href="{{ route($menu->url) }}"
-                  class="menu-link">
+            <li class="menu-item {{ request()->routeIs(str_replace('.index', '.*', $menu->url)) ? 'active' : '' }}">
+              <a href="{{ route($menu->url) }}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-{{ $menu->icon }}"></i>
                   <div class="text-truncate" data-i18n="Email">{{ $menu->name }}</div>
-                </a>
-              </li>
+              </a>
+            </li>
             @endforeach
+
           </ul>
         </aside>
         <!-- / Menu -->
@@ -255,6 +258,22 @@
             <!-- Content -->
             
             <div class="container-xxl flex-grow-1 container-p-y">
+              @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bx bx-check-circle me-2"></i>
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              @endif
+
+              @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bx bx-error-circle me-2"></i>
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              @endif
+
 
             @if (Route::current()->getName() == 'dashboard')
               
@@ -314,6 +333,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    
+    <script>
+      new DataTable('#example');
+    </script>
+    
   </body>
 </html>
 

@@ -29,6 +29,7 @@
                                         <form action="{{ route('users.update_role', $user->id) }}" method="POST">
                                             @csrf
                                             @method('PATCH')
+                                            <input type="hidden" name="user_id" value="{{ $user->id }}">
                                             <select name="role_id" class="form-select" id="role_select_{{ $key }}" 
                                                     onchange="if(confirm('Yakin ubah role?')) this.form.submit();">
                                                 @foreach ($roles as $role)
