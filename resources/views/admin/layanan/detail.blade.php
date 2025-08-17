@@ -22,7 +22,7 @@
                 <p class="fw-bold">Sektor</p>
             </div>
             <div class="col-lg-10">
-                <p>{{ $layanan->seoktor }}</p>
+                <p>{{ $layanan->sektor }}</p>
             </div>
         </div>
         <div class="row mt-3">
@@ -50,7 +50,23 @@
             </div>
             <div class="col-lg-10">
                 @if(!empty($layanan->poster))
-                    <img src="" alt="">
+                    <img src="{{ $layanan->poster ? asset('storage/' . $layanan->poster) : 'https://via.placeholder.com/150' }}" alt="Poster" width="500" class="img-fluid">
+                @endif
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-2">
+                <p class="fw-bold">Persyaratan</p>
+            </div>
+            <div class="col-lg-10">
+                @if($layanan->persyaratan->isEmpty())
+                    <p>Tidak ada persyaratan.</p>
+                @else
+                    <ul>
+                        @foreach($layanan->persyaratan as $persyaratan)
+                            <li>{{ $persyaratan->syarat }}</li>
+                        @endforeach
+                    </ul>
                 @endif
             </div>
         </div>

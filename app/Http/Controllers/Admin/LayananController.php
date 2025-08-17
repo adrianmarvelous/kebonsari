@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Layanan;
 use App\Models\Persyaratan;
 use App\Rules\SafeInput;
+use Illuminate\Support\Facades\Storage;
+
 class LayananController extends Controller
 {
     /**
@@ -41,7 +43,7 @@ class LayananController extends Controller
             'kategori' => ['required', 'string', 'max:255', new SafeInput],
             'sektor'   => ['required', 'string', 'max:255', new SafeInput],
             'nama_layanan'   => ['required', 'string', 'max:255', new SafeInput],
-            'video'   => ['nulable', 'string', 'max:255', new SafeInput],
+            'video'   => ['nullable', 'string', 'max:255', new SafeInput],
             'poster' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048', new SafeInput], // max 2MB
             // ✅ Persyaratan array validation
             'persyaratan'       => ['required', 'array', 'min:1'], // must be array and have at least 1 item
@@ -75,10 +77,11 @@ class LayananController extends Controller
                 }
 
                 $fileName = time().'_'.$request->poster->getClientOriginalName();
-                $path = $request->poster->storeAs('posters', $fileName, 'public/upload/poster'); // storage/app/public/posters
+                $path = $request->poster->storeAs('upload/poster', $fileName, 'public');
             }
 
             $layanan = Layanan::create([
+                'id'           => $last_id,
                 'kategori'     => $validated['kategori'],
                 'sektor'       => $validated['sektor'],
                 'nama_layanan' => $validated['nama_layanan'],
@@ -89,17 +92,25 @@ class LayananController extends Controller
 
             // If you want to save persyaratan in another table
             foreach ($validated['persyaratan'] as $persyaratan) {
-                $layanan->persyaratan()->create([
-                    'persyaratan' => $persyaratan
+                $layanan = Persyaratan::create([
+                    'id_layanan' => $last_id,
+                    'syarat' => $persyaratan
                 ]);
             }
 
             DB::commit();
 
-            return redirect()->route('layanan.index')->with('success', 'Layanan created successfully!');
+            // ✅ Redirect to layanan.index on success
+            return redirect()
+                ->route('layanan.index')
+                ->with('success', 'Layanan created successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to create layanan: '.$e->getMessage());
+
+            // ✅ Redirect to layanan.index on error with message
+            return redirect()
+                ->route('layanan.index')
+                ->with('error', 'Failed to create layanan: ' . $e->getMessage());
         }
         
     }
@@ -114,7 +125,7 @@ class LayananController extends Controller
             ['id' => ['required', 'integer', new SafeInput]] // rules
         );
 
-        $layanan = Layanan::findOrFail($id);
+        $layanan = Layanan::with('persyaratan')->findOrFail($id);
         $kategori = Layanan::select('kategori')->distinct()->get();
         $sektor = Layanan::select('sektor')->distinct()->get();
 
@@ -126,16 +137,95 @@ class LayananController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $validator = Validator::make(
+            ['id' => $id], // data to validate
+            ['id' => ['required', 'integer', new SafeInput]] // rules
+        );
+
+        $layanan = Layanan::with('persyaratan')->findOrFail($id);
+
+        $kategori = Layanan::select('kategori')->distinct()->get();
+        $sektor = Layanan::select('sektor')->distinct()->get();
+        return view('admin.layanan.create',compact('kategori','sektor','layanan','id')); // Assuming you have a view for listing services
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'kategori' => ['required', 'string', 'max:255', new SafeInput],
+            'sektor'   => ['required', 'string', 'max:255', new SafeInput],
+            'nama_layanan'   => ['required', 'string', 'max:255', new SafeInput],
+            'video'   => ['nullable', 'string', 'max:255', new SafeInput],
+            'poster' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048', new SafeInput],
+            'persyaratan'   => ['required', 'array', 'min:1'],
+            'persyaratan.*' => ['required', 'string', 'max:255', new SafeInput],
+        ]);
+
+        $layanan = Layanan::with('persyaratan')->findOrFail($id);
+
+        DB::beginTransaction();
+
+        try {
+            // Handle poster upload
+            if ($request->hasFile('poster')) {
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                $file = $request->file('poster');
+                $extension = strtolower($file->getClientOriginalExtension());
+
+                if (!in_array($extension, $allowedExtensions)) {
+                    return redirect()->back()->with('error', 'Poster must be an image of type: ' . implode(', ', $allowedExtensions));
+                }
+
+                $fileName = time().'_'.$file->getClientOriginalName();
+                $path = $request->poster->storeAs('upload/poster', $fileName, 'public');
+
+                // Optionally delete old poster
+                if ($layanan->poster && \Storage::disk('public')->exists($layanan->poster)) {
+                    \Storage::disk('public')->delete($layanan->poster);
+                }
+
+                $layanan->poster = $path;
+            }
+
+            // Handle Google Drive video ID
+            $videoUrl = $validated['video'];
+            preg_match('/\/d\/([a-zA-Z0-9_-]+)/', $videoUrl, $matches);
+            $layanan->video = $matches[1] ?? null;
+
+            // Update other fields
+            $layanan->kategori     = $validated['kategori'];
+            $layanan->sektor       = $validated['sektor'];
+            $layanan->nama_layanan = $validated['nama_layanan'];
+            $layanan->save();
+
+            // Update persyaratan
+            // Delete old ones first
+            $layanan->persyaratan()->delete();
+
+            // Insert new persyaratan
+            foreach ($validated['persyaratan'] as $syarat) {
+                $layanan->persyaratan()->create([
+                    'syarat' => $syarat
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('layanan.index')
+                ->with('success', 'Layanan updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('layanan.index')
+                ->with('error', 'Failed to update layanan: ' . $e->getMessage());
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

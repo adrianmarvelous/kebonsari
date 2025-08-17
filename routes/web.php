@@ -4,10 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Web\LayananController as WebLayananController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+Route::get('/layanan', [WebLayananController::class, 'index'])->name('web.layanan.index');
 
 
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
