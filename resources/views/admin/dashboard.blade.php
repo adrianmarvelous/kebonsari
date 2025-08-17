@@ -287,12 +287,12 @@
               <div class="container-xxl">
                 <div
                   class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-                  <div class="mb-2 mb-md-0">
+                  {{-- <div class="mb-2 mb-md-0">
                     ©
                     <script>
                       document.write(new Date().getFullYear());
                     </script>
-                  </div>
+                  </div> --}}
                 </div>
               </div>
             </footer>

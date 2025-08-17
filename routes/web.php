@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Admin\InfoController;
 use App\Http\Controllers\Web\LayananController as WebLayananController;
 
 Route::get('/', function () {
@@ -28,6 +29,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update_role');
 
     Route::resource('layanan', LayananController::class);
+    Route::resource('info', InfoController::class);
 });
 
 Route::middleware('auth')->group(function () {

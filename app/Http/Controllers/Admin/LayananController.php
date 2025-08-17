@@ -35,7 +35,7 @@ class LayananController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage.d
      */
     public function store(Request $request)
     {

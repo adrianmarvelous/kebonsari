@@ -11,7 +11,7 @@
 </style>
 
 <div class="container">
-    <div class="row card shadow h-100">
+    <div class="row card shadow">
         <div class="p-3">
     <input type="text" id="searchBox" class="form-control" placeholder="Cari layanan...">
     <ul id="suggestions" class="list-group position-absolute w-100" style="z-index:1000;"></ul>
