@@ -10,16 +10,12 @@
             </div>
         </div>
         <div class="row">
-            <form action="" method="post">
+            <form action="{{ route('info.update',['info' => 1]) }}" method="POST">
+                @csrf
+                @method('PUT') 
                 <div class="col-md-12 mb-5">
-                    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
-                    <textarea id="editor"></textarea>
-
-                    <script>
-                    ClassicEditor
-                        .create(document.querySelector('#editor'))
-                        .catch(error => console.error(error));
-                    </script>
+                    <textarea id="summernote" name="info">{{ $info->info }}</textarea>
+                    
                     <div class="d-flex justify-content-end mt-3">
                         <button class="btn btn-primary">Simpan</button>
                     </div>

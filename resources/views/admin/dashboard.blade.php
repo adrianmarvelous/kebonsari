@@ -68,6 +68,10 @@
 
     <script src="{{ asset('assets/sneat/assets/js/config.js') }}"></script>
     
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+    
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
+    
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -338,6 +342,25 @@
       new DataTable('#example');
     </script>
     
+    {{-- <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => console.error(error));
+    </script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+    <script>
+      $(function () {
+        $('#summernote').summernote({
+          height: 200,
+          toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['table']],
+            ['view', ['codeview']]
+          ]
+        });
+      });
+    </script>
   </body>
 </html>
 
