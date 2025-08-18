@@ -5,11 +5,24 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Layanan;
+use App\Models\Visitor;
+use App\Rules\SafeInput;
 
 class LayananController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $validated = $request->validate([
+            'nama' => ['required', 'string', 'max:255', new SafeInput],
+            'alamat' => ['required', 'string', 'max:255', new SafeInput],
+        ]);
+          // simpan ke DB tanpa id_layanan dulu
+        $visitor = Visitor::create($validated);
+
+        // simpan visitor_id ke session
+        session(['visitor_id' => $visitor->id]);
+
+        
         $sektor = Layanan::select('sektor')->distinct()->get();
         return view('web.layanan.index', compact('sektor'));
     }
