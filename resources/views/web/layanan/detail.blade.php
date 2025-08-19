@@ -34,11 +34,22 @@
                     </iframe>
                 @endif
             </div>
-            <a class="btn btn-primary" 
+            {{-- <a class="btn btn-primary" 
                 href="{{ $layanan->kategori == 'SSW ALFA' ? 'https://sswalfa.surabaya.go.id/' : 'https://klampid-dispendukcapil.surabaya.go.id/' }}"
                 target="_blank">
                 {{ $layanan->kategori }}
+            </a> --}}
+            <a class="btn btn-primary" 
+                href="{{ route('web.layanan.klik_app',['id' => $layanan->id]) }}"
+                target="_blank">
+                {{ $layanan->kategori }}
             </a>
+<form action="{{ route('visitor.session.destroy') }}" method="POST" style="display:inline;">
+    @csrf
+    <button type="submit" class="btn btn-danger">
+        Hapus Session Visitor
+    </button>
+</form>
 
         </div>
     </div>

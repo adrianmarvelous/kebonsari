@@ -13,7 +13,13 @@ Route::get('/', function () {
 Route::post('/layanan', [WebLayananController::class, 'index'])->name('web.layanan.index');
 Route::get('/layanan/{sektor}', [WebLayananController::class, 'sektor'])->name('web.layanan.sektor');
 Route::get('/layanan/detail/{id}', [WebLayananController::class, 'detail'])->name('web.layanan.detail');
+Route::get('/layanan/detail/{id}/klik_app', [WebLayananController::class, 'klik_app'])->name('web.layanan.klik_app');
 Route::get('/search-layanan', [WebLayananController::class, 'search'])->name('web.layanan.search');
+Route::post('/visitor/session/destroy', function () {
+    session()->forget(['visitor_id', 'visitor_nama', 'visitor_alamat']);
+    return redirect()->route('layanan.index')
+        ->with('success', 'Sesi visitor berhasil dihapus.');
+})->name('visitor.session.destroy');
 
 
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {

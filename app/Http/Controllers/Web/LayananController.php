@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Layanan;
 use App\Models\Visitor;
@@ -17,10 +18,12 @@ class LayananController extends Controller
             'alamat' => ['required', 'string', 'max:255', new SafeInput],
         ]);
           // simpan ke DB tanpa id_layanan dulu
-        $visitor = Visitor::create($validated);
+        // $visitor = Visitor::create($validated);
 
-        // simpan visitor_id ke session
-        session(['visitor_id' => $visitor->id]);
+        // // simpan visitor_id ke session
+        // session(['visitor_id' => $visitor->id]);
+        session(['visitor_nama' => $validated['nama']]);
+        session(['visitor_alamat' => $validated['alamat']]);
 
         
         $sektor = Layanan::select('sektor')->distinct()->get();
@@ -34,7 +37,31 @@ class LayananController extends Controller
     public function detail($id)
     {
         $layanan = Layanan::with('persyaratan')->findOrFail($id);
-        return view('web.layanan.detail', compact('layanan'));
+        
+        DB::beginTransaction();
+
+        try {
+                Visitor::create([
+                    'nama' => session('visitor_nama'),
+                    'alamat' => session('visitor_alamat'),
+                    'id_layanan' => $id,
+                ]);
+
+            DB::commit();
+
+                return view('web.layanan.detail', [
+                    'layanan' => $layanan,
+                    'success' => 'Visitor updated successfully!'
+                ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // ✅ Redirect to layanan.index on error with message
+            return back()->with('error', 'Failed to update visitor: ' . $e->getMessage());
+        }
+
+        // return view('web.layanan.detail', compact('layanan'));
     }
     public function search(Request $request)
     {
@@ -49,6 +76,37 @@ class LayananController extends Controller
         } catch (\Exception $e) {
             \Log::error("Search error: " . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    public function klik_app($id)
+    {
+        $layanan = Layanan::with('persyaratan')->findOrFail($id);
+        if($layanan['kategori'] == "SSW ALFA"){
+            $url = 'https://sswalfa.surabaya.go.id/';
+        }else{
+            $url = 'https://klampid-dispendukcapil.surabaya.go.id/';
+        }
+        try {
+            $nama = session('visitor_nama');
+            $alamat = session('visitor_alamat');
+            $visitor = Visitor::where('nama', $nama)
+                                ->where('alamat', $alamat)
+                                ->where('id_layanan', $id)
+                                ->firstOrFail();
+
+
+            $visitor->update([
+                'klik_app' => 1,
+            ]);
+
+            DB::commit();
+            return redirect()->away($url);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // ✅ Redirect to layanan.index on error with message
+            return back()->with('error', 'Failed to update visitor: ' . $e->getMessage());
         }
     }
 

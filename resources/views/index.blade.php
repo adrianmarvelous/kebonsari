@@ -12,6 +12,22 @@
     </head>
     <body>
         
+              @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bx bx-check-circle me-2"></i>
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              @endif
+
+              @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bx bx-error-circle me-2"></i>
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              @endif
+              
         @if (Route::current()->getName() == '')
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -38,8 +54,8 @@
                     </div>
                 </div>
         <div class="p-3 m-3">
-        <input type="text" id="searchBox" class="form-control" placeholder="Cari layanan...">
-        <ul id="suggestions" class="list-group position-absolute w-100" style="z-index:1000;"></ul>
+        {{-- <input type="text" id="searchBox" class="form-control" placeholder="Cari layanan...">
+        <ul id="suggestions" class="list-group position-absolute w-100" style="z-index:1000;"></ul> --}}
             <p class="text-center" style="margin-top: 100px;font-size:3rem">Kelurahan Kebonsari</p>
             <h4 class="text-center">Pemerintah Kota Surabaya</h4>
 
