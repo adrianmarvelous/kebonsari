@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Models\Layanan;
 use App\Models\Visitor;
 use App\Rules\SafeInput;
+
 
 class LayananController extends Controller
 {
@@ -31,11 +33,19 @@ class LayananController extends Controller
     }
     public function sektor($sektor)
     {
+        if (!Session::has('visitor_nama')) {
+            // Redirect to a specific route if session does not exist
+            return redirect()->route('index');
+        }
         $layanan = Layanan::with('persyaratan')->where('sektor', $sektor)->get();
         return view('web.layanan.sektor', compact('layanan', 'sektor'));
     }
     public function detail($id)
     {
+        if (!Session::has('visitor_nama')) {
+            // Redirect to a specific route if session does not exist
+            return redirect()->route('index');
+        }
         $layanan = Layanan::with('persyaratan')->findOrFail($id);
         
         DB::beginTransaction();

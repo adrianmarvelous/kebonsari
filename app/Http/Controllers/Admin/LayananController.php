@@ -165,7 +165,6 @@ class LayananController extends Controller
         ]);
 
         $layanan = Layanan::with('persyaratan')->findOrFail($id);
-
         DB::beginTransaction();
 
         try {
@@ -190,10 +189,13 @@ class LayananController extends Controller
                 $layanan->poster = $path;
             }
 
-            // Handle Google Drive video ID
-            $videoUrl = $validated['video'];
-            preg_match('/\/d\/([a-zA-Z0-9_-]+)/', $videoUrl, $matches);
-            $layanan->video = $matches[1] ?? null;
+            if($layanan->video != $validated['video']){
+                // Handle Google Drive video ID
+                $videoUrl = $validated['video'];
+                preg_match('/\/d\/([a-zA-Z0-9_-]+)/', $videoUrl, $matches);
+                $layanan->video = $matches[1] ?? null;
+            }
+
 
             // Update other fields
             $layanan->kategori     = $validated['kategori'];

@@ -12,7 +12,7 @@
     </head>
     <body>
         
-              @if (session('success'))
+              {{-- @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="bx bx-check-circle me-2"></i>
                     {{ session('success') }}
@@ -26,9 +26,10 @@
                     {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-              @endif
+              @endif --}}
+
               
-        @if (Route::current()->getName() == '')
+        @if (Route::current()->getName() == 'index')
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">

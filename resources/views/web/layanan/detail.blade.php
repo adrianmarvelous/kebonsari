@@ -44,12 +44,12 @@
                 target="_blank">
                 {{ $layanan->kategori }}
             </a>
-<form action="{{ route('visitor.session.destroy') }}" method="POST" style="display:inline;">
-    @csrf
-    <button type="submit" class="btn btn-danger">
-        Hapus Session Visitor
-    </button>
-</form>
+            {{-- <form action="{{ route('visitor.session.destroy') }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn btn-danger">
+                    Hapus Session Visitor
+                </button>
+            </form> --}}
 
         </div>
     </div>

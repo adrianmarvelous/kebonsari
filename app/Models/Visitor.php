@@ -17,4 +17,10 @@ class Visitor extends Model
 
     // If you only want created_at (no updated_at):
     const UPDATED_AT = null;
+
+    
+    public function layanan()
+    {
+        return $this->hasOne(Layanan::class, 'id');
+    }
 }
