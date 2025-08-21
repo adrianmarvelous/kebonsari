@@ -16,6 +16,6 @@ class agenda extends Model
     
     public function lampiran()
     {
-        return $this->hasMany(Agenda_lampiran::class, 'id_agenda', 'id');
+        return $this->hasMany(agenda_lampiran::class, 'id_agenda', 'id');
     }
 }
