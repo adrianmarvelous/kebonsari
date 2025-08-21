@@ -68,7 +68,7 @@
                 </button>
 
                     {{-- <a href="{{ route('web.layanan.index') }}" class="btn btn-primary mb-2">Pelayanan</a> --}}
-                    <a href="" class="btn btn-primary mt-3 mb-2">Informasi Umum</a>
+                    <a href="{{ route('web.informasi_umum') }}" class="btn btn-primary mt-3 mb-2">Informasi Umum</a>
                 </div>
             </div>
         </div>

@@ -5,9 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Admin\InfoController;
-use App\Http\Controllers\Web\LayananController as WebLayananController;
 use App\Http\Controllers\Admin\PengunjungController;
 use App\Http\Controllers\Admin\AgendaController;
+use App\Http\Controllers\Web\LayananController as WebLayananController;
+use App\Http\Controllers\Web\InformasiUmumController;
 
 Route::get('/', function () {
     return view('index');
@@ -18,6 +19,10 @@ Route::get('/layanan/{sektor}', [WebLayananController::class, 'sektor'])->name('
 Route::get('/layanan/detail/{id}', [WebLayananController::class, 'detail'])->name('web.layanan.detail');
 Route::get('/layanan/detail/{id}/klik_app', [WebLayananController::class, 'klik_app'])->name('web.layanan.klik_app');
 Route::get('/search-layanan', [WebLayananController::class, 'search'])->name('web.layanan.search');
+
+Route::get('/informasi-umum', [InformasiUmumController::class, 'informasi_umum'])->name('web.informasi_umum');
+Route::get('/informasi-umum/detail/{id}', [InformasiUmumController::class, 'detail'])->name('web.informasi_umum.detail');
+
 Route::post('/visitor/session/destroy', function () {
     session()->forget(['visitor_nama', 'visitor_alamat']);
     return redirect()->route('index')
@@ -40,6 +45,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::resource('layanan', LayananController::class);
     Route::resource('info', InfoController::class);
     Route::resource('agenda', AgendaController::class);
+    Route::post('/agenda/upload_lampiran', [AgendaController::class, 'upload_lampiran'])->name('agenda.upload_lampiran');
+    Route::post('/agenda/update_lampiran', [AgendaController::class, 'update_lampiran'])->name('agenda.update_lampiran');
+    Route::get('/agenda/hapus_lampiran/{id_lampiran}', [AgendaController::class, 'hapus_lampiran'])->name('agenda.hapus_lampiran');
 
     Route::get('/pengunjung', [PengunjungController::class, 'index'])->name('pengunjung.index');
 });
