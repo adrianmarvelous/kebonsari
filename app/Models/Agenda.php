@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class agenda extends Model
+class Agenda extends Model
 {
     protected $table = 'agenda'; // explicitly tell Laravel the correct table
     protected $fillable = [
@@ -16,6 +16,6 @@ class agenda extends Model
     
     public function lampiran()
     {
-        return $this->hasMany(agenda_lampiran::class, 'id_agenda', 'id');
+        return $this->hasMany(Agenda_lampiran::class, 'id_agenda', 'id');
     }
 }

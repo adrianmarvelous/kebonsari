@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\agenda;
-use App\Models\agenda_lampiran;
+use App\Models\Agenda;
+use App\Models\Agenda_lampiran;
 use App\Rules\SafeInput;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +17,7 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        $agendas = agenda::with('lampiran')->orderBy('created_at', 'desc')->get();
+        $agendas = Agenda::with('lampiran')->orderBy('created_at', 'desc')->get();
         return view('admin.agenda.index',compact('agendas'));
     }
 
@@ -140,7 +140,7 @@ class AgendaController extends Controller
         DB::beginTransaction();
 
         try {
-            $lampiran = agenda_lampiran::findOrFail($request->id_lampiran);
+            $lampiran = Agenda_lampiran::findOrFail($request->id_lampiran);
             $lampiran->nama = $request->nama;
 
             if ($request->hasFile('lampiran')) {
@@ -193,7 +193,7 @@ class AgendaController extends Controller
      */
     public function show(string $id)
     {
-        $agenda = agenda::with('lampiran')->findOrFail($id);
+        $agenda = Agenda::with('lampiran')->findOrFail($id);
 
         return view('admin.agenda.show',compact('agenda'));
     }

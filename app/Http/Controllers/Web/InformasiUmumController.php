@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\agenda;
+use App\Models\Agenda;
 
 class InformasiUmumController extends Controller
 {
     public function informasi_umum()
     {
-        $agendas = agenda::with('lampiran')
+        $agendas = Agenda::with('lampiran')
                             ->orderBy('created_at', 'desc')
                             ->take(3)   // or ->limit(3)
                             ->get();
@@ -20,7 +20,7 @@ class InformasiUmumController extends Controller
 
     public function detail($id)
     {
-        $agenda = agenda::with('lampiran')->findOrFail($id);
+        $agenda = Agenda::with('lampiran')->findOrFail($id);
         return view('web.informasi_umum.detail', compact('agenda'));
     }
 }
