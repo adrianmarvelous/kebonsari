@@ -187,7 +187,7 @@
 
               <p class="text-center">
                 <span>Sudah puya akun?</span>
-                <a href="auth-login-basic.html">
+                <a href="/login">
                   <span>Login disini</span>
                 </a>
               </p>
