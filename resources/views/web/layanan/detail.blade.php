@@ -1,10 +1,4 @@
 @extends('index')
-<style>
-  .ratio-9x16 {
-    --bs-aspect-ratio: calc(16 / 9 * 100%); /* Portrait: height > width */
-  }
-</style>
-
 <div class="container">
     <div class="row p-3">
         <div class="card shadow p-3">
@@ -20,27 +14,50 @@
                 <li><?=$value['syarat']?></li>
                 <?php }?>
             </ol>
-            <h2>Tutorial {{ $layanan->kategori }}</h2>
-            <div class="d-flex mb-3 overflow-auto" style="gap: 10px; white-space: nowrap;">
-                <?php if(isset($layanan['video']) && $layanan['video'] != '') { ?>
-                    <div class="ratio ratio-9x16" style="min-width: 250px; max-width: 300px;">
-                        <iframe src="https://drive.google.com/file/d/<?= htmlentities($layanan['video']) ?>/preview"
-                                allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                <?php } ?>
+            <style>
+  .ratio-9x16 {
+    --bs-aspect-ratio: calc(16 / 9 * 100%); /* Portrait mode */
+  }
+  .video-row {
+    display: flex;
+    gap: 20px;
+  }
+  .video-col {
+    flex: 1 1 50%;   /* each video always takes 50% width */
+    text-align: center;
+  }
+</style>
 
-                @if ($layanan->kategori == 'SSW ALFA')
-                    <div class="ratio ratio-9x16" style="min-width: 250px; max-width: 300px;">
-                        <iframe src="https://drive.google.com/file/d/1pXcm3Idrq8TPbMgy-KgWo1gV_LXbOQux/preview"
-                                allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                @else
-                    <div class="ratio ratio-9x16" style="min-width: 250px; max-width: 300px;">
-                        <iframe src="https://drive.google.com/file/d/1Ffg9k7672cdwgKYkGEo4UryZBO_YYBXF/preview"
-                                allow="autoplay" allowfullscreen></iframe>
-                    </div>
-                @endif
+<div class="video-row">
+    <?php if(isset($layanan['video']) && $layanan['video'] != '') { ?>
+        <div class="video-col d-flex justify-content-between flex-column">
+            <h2>Tutorial Teknis Pengajuan</h2>
+            <div class="ratio ratio-9x16">
+                <iframe src="https://drive.google.com/file/d/<?= htmlentities($layanan['video']) ?>/preview"
+                        allow="autoplay" allowfullscreen></iframe>
             </div>
+        </div>
+    <?php } ?>
+
+    @if ($layanan->kategori == 'SSW ALFA')
+        <div class="video-col d-flex justify-content-between flex-column">
+            <h2>Tutorial {{ $layanan->kategori }}</h2>
+            <div class="ratio ratio-9x16">
+                <iframe src="https://drive.google.com/file/d/1pXcm3Idrq8TPbMgy-KgWo1gV_LXbOQux/preview"
+                        allow="autoplay" allowfullscreen></iframe>
+            </div>
+        </div>
+    @else
+        <div class="video-col d-flex justify-content-between flex-column">
+            <h2>Tutorial {{ $layanan->kategori }}</h2>
+            <div class="ratio ratio-9x16">
+                <iframe src="https://drive.google.com/file/d/1Ffg9k7672cdwgKYkGEo4UryZBO_YYBXF/preview"
+                        allow="autoplay" allowfullscreen></iframe>
+            </div>
+        </div>
+    @endif
+</div>
+
 
 
             {{-- <a class="btn btn-primary" 
@@ -48,7 +65,7 @@
                 target="_blank">
                 {{ $layanan->kategori }}
             </a> --}}
-            <a class="btn btn-primary" 
+            <a class="btn btn-primary mt-3" 
                 href="{{ route('web.layanan.klik_app',['id' => $layanan->id]) }}"
                 target="_blank">
                 {{ $layanan->kategori }}
