@@ -92,9 +92,9 @@ class LayananController extends Controller
     {
         $layanan = Layanan::with('persyaratan')->findOrFail($id);
         if($layanan['kategori'] == "SSW ALFA"){
-            $url = 'https://sswalfa.surabaya.go.id/';
+            $url = 'https://sswalfa.surabaya.go.id/login';
         }else{
-            $url = 'https://klampid-dispendukcapil.surabaya.go.id/';
+            $url = 'https://wargaklampid-dispendukcapil.surabaya.go.id/app/login';
         }
         try {
             $nama = session('visitor_nama');

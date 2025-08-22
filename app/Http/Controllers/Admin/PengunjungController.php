@@ -38,7 +38,7 @@ class PengunjungController extends Controller
             ->whereYear('created_at', $tahun)
             ->get();
         header("Content-Type: application/vnd.ms-excel");
-        header("Content-Disposition: attachment; filename=export_pengunjung.xls");
+        header("Content-Disposition: attachment; filename=export_pengunjung_bulan_$bulan tahun_$tahun.xls");
         header("Pragma: no-cache");
         header("Expires: 0");
         

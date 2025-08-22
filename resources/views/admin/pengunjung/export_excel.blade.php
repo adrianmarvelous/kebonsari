@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Daftar Pengunjung Web</h1>
+    <h1>Daftar Pengunjung Web Bulan {{ $bulan }} Tahun {{ $tahun }}</h1>
     <table border="1" style="border-collapse: collapse; width: 100%;">
     <thead>
         <tr>
