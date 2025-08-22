@@ -182,13 +182,13 @@
                     </label>
                   </div>
                 </div> --}}
-                <button class="btn btn-primary d-grid w-100">Sign up</button>
+                <button class="btn btn-primary d-grid w-100">Daftar</button>
               </form>
 
               <p class="text-center">
-                <span>Already have an account?</span>
-                <a href="auth-login-basic.html">
-                  <span>Sign in instead</span>
+                <span>Sudah puya akun?</span>
+                <a href="/login">
+                  <span>Login disini</span>
                 </a>
               </p>
             </div>
@@ -200,14 +200,6 @@
 
     <!-- / Content -->
 
-    <div class="buy-now">
-      <a
-        href="https://themeselection.com/item/sneat-dashboard-pro-bootstrap/"
-        target="_blank"
-        class="btn btn-danger btn-buy-now"
-        >Upgrade to Pro</a
-      >
-    </div>
 
     <!-- Core JS -->
 
