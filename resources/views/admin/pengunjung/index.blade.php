@@ -4,8 +4,13 @@
 @section('content')
     <div class="container-fluid card shadow">
         <div class="row">
-            <div class="col-md-12">
-                <h1 class="mt-4">Data Pengunjung</h1>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="mt-4">Data Pengunjung</h1>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-success mb-3" href="{{ route('pengunjung.export_excel',['bulan' => $bulan, 'tahun' => $tahun]) }}" target="_blank">Export Excel</a>
+                </div>
             </div>
         </div>
         <div class="row">

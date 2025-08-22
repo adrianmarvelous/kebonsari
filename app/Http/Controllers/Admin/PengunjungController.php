@@ -28,9 +28,20 @@ class PengunjungController extends Controller
                                         'pengunjung' => $pengunjung,
                                     ];
                                 });
-
-        // dd($tahun_visitor);
         
         return view('admin.pengunjung.index',compact('tahun_visitor','bulan','tahun'));
+    }
+    public function export_excel($bulan,$tahun)
+    {
+        $pengunjung = Visitor::with('layanan')
+            ->whereMonth('created_at', $bulan)
+            ->whereYear('created_at', $tahun)
+            ->get();
+        header("Content-Type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=export_edlivery_.xls");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        
+        return view('admin.pengunjung.export_excel',compact('pengunjung', 'bulan', 'tahun'));
     }
 }

@@ -21,6 +21,6 @@ class Visitor extends Model
     
     public function layanan()
     {
-        return $this->hasOne(Layanan::class, 'id');
+        return $this->hasOne(Layanan::class, 'id','id_layanan');
     }
 }

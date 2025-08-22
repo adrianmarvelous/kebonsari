@@ -50,6 +50,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::get('/agenda/hapus_lampiran/{id_lampiran}', [AgendaController::class, 'hapus_lampiran'])->name('agenda.hapus_lampiran');
 
     Route::get('/pengunjung', [PengunjungController::class, 'index'])->name('pengunjung.index');
+    Route::get('/pengunjung/export_excel/{bulan}/{tahun}', [PengunjungController::class, 'export_excel'])->name('pengunjung.export_excel');
 });
 
 Route::middleware('auth')->group(function () {
