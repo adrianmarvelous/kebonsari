@@ -49,7 +49,7 @@
         </div>
     @else
         <div class="video-col d-flex justify-content-between flex-column">
-            <h2>Tutorial {{ $layanan->kategori }}</h2>
+            <h2>Tutorial Tutorial Pembuatan Akun Pemula</h2>
             <div class="ratio ratio-9x16">
                 <iframe src="https://drive.google.com/file/d/1Ffg9k7672cdwgKYkGEo4UryZBO_YYBXF/preview"
                         allow="autoplay" allowfullscreen></iframe>
