@@ -29,15 +29,6 @@
 </style>
 
 <div class="video-row">
-    <?php if(isset($layanan['video']) && $layanan['video'] != '') { ?>
-        <div class="video-col d-flex justify-content-between flex-column">
-            <h2>Tutorial Teknis Pengajuan</h2>
-            <div class="ratio ratio-9x16">
-                <iframe src="https://drive.google.com/file/d/<?= htmlentities($layanan['video']) ?>/preview"
-                        allow="autoplay" allowfullscreen></iframe>
-            </div>
-        </div>
-    <?php } ?>
 
     @if ($layanan->kategori == 'SSW ALFA')
         <div class="video-col d-flex justify-content-between flex-column">
@@ -56,6 +47,15 @@
             </div>
         </div>
     @endif
+    <?php if(isset($layanan['video']) && $layanan['video'] != '') { ?>
+        <div class="video-col d-flex justify-content-between flex-column">
+            <h2>Tutorial Teknis Pengajuan</h2>
+            <div class="ratio ratio-9x16">
+                <iframe src="https://drive.google.com/file/d/<?= htmlentities($layanan['video']) ?>/preview"
+                        allow="autoplay" allowfullscreen></iframe>
+            </div>
+        </div>
+    <?php } ?>
 </div>
 
 
