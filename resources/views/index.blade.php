@@ -153,7 +153,7 @@
                 <div class="sidebar-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
-                        <a href="index.html" class="logo">
+                        <a href="{{ route('index') }}" class="logo">
                             <h1 class="text-white">Kebonsari</h1>
                         </a>
                         <div class="nav-toggle">
@@ -229,17 +229,7 @@
                     <!-- Navbar Header -->
                     <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
                         <div class="container-fluid">
-                            <nav
-                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button type="submit" class="btn btn-search pe-1">
-                                            <i class="fa fa-search search-icon"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" placeholder="Search ..." class="form-control" />
-                                </div>
-                            </nav>
+                            
 
                             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
 
@@ -343,32 +333,13 @@
         <script src="{{ asset('templetes/kaiadmin-lite/assets/js/core/popper.min.js') }}"></script>
         <script src="{{ asset('templetes/kaiadmin-lite/assets/js/core/bootstrap.min.js') }}"></script>
 
-        {{-- <script src="{{ asset('templetes/kaiadmin-lite/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}">
-        </script> --}}
-
-        {{-- <script src="{{ asset('templetes/kaiadmin-lite/assets/js/plugin/chart.js/chart.min.js') }}"></script>
-
-    <script src="{{ asset('templetes/kaiadmin-lite/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}">
-    </script>
-
-    <script src="{{ asset('templetes/kaiadmin-lite/assets/js/plugin/chart-circle/circles.min.js') }}"></script>
-
-    <script src="{{ asset('templetes/kaiadmin-lite/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}">
-    </script>
-
-    <script src="{{ asset('templetes/kaiadmin-lite/assets/js/plugin/jsvectormap/jsvectormap.min.js') }}"></script>
-    <script src="{{ asset('templetes/kaiadmin-lite/assets/js/plugin/jsvectormap/world.js') }}"></script> --}}
-
-        <!-- Datatables -->
-
-        <!-- Sweet Alert -->
-        {{-- <script src="{{ asset('templetes/kaiadmin-lite/assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script> --}}
-
+        <!-- jQuery Scrollbar -->
+        <script src="{{ asset('templetes/kaiadmin-lite/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
 
         <!-- Kaiadmin JS -->
         <script src="{{ asset('templetes/kaiadmin-lite/assets/js/kaiadmin.min.js') }}"></script>
-
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        
+        {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
         <script>
             $(document).ready(function() {
                 $('#searchBox').on('keyup', function() {
@@ -413,37 +384,6 @@
                 });
             });
         </script>
-        <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-        {{-- <script src="{{ asset('templetes/kaiadmin-lite/assets/js/setting-demo.js') }}"></script>
-    <script src="{{ asset('templetes/kaiadmin-lite/assets/js/demo.js') }}"></script> --}}
-        {{-- <script>
-        $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#177dff",
-            fillColor: "rgba(23, 125, 255, 0.14)",
-        });
-
-        $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#f3545d",
-            fillColor: "rgba(243, 84, 93, .14)",
-        });
-
-        $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#ffa534",
-            fillColor: "rgba(255, 165, 52, .14)",
-        });
-    </script> --}}
     </body>
 
     </html>

@@ -21,8 +21,10 @@
 
             @foreach ($layanan as $value)
                 <a href="{{ route('web.layanan.detail',['id' => $value->id]) }}" style="text-decoration: none;color: black;">
-                    <div class="card cardd shadow mb-3">
-                        <div class="card-body">
+                    {{-- <div class="card cardd shadow mb-3"> --}}
+                    <div class="card card-secondary bg-secondary-gradient mb-3">
+                        <div class="card-body bubble-shadow">
+                        {{-- <div class="card-body"> --}}
                             <h5 class="card-title">{{ $value->nama_layanan }}</h5>
                         </div>
                     </div>
