@@ -339,7 +339,7 @@
         <!-- Kaiadmin JS -->
         <script src="{{ asset('templetes/kaiadmin-lite/assets/js/kaiadmin.min.js') }}"></script>
         
-        {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+        {{-- <script src="https://code.jquery.c om/jquery-3.6.0.min.js"></script> --}}
         <script>
             $(document).ready(function() {
                 $('#searchBox').on('keyup', function() {

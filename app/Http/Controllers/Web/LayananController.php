@@ -27,9 +27,35 @@ class LayananController extends Controller
         session(['visitor_nama' => $validated['nama']]);
         session(['visitor_alamat' => $validated['alamat']]);
 
+        $layanan_populer = [
+            [
+                'link' => 'a',
+                'judul' => 'Akta Kelahiran'
+            ],
+            [
+                'link' => 'b',
+                'judul' => 'Pendaftaran KTP Elektronik',
+            ],
+            [
+                'link' => 'c',
+                'judul' => 'Perubahan Biodata',
+            ],
+            [
+                'link' => 'd',
+                'judul' => 'Surat Pengantar Nikah',
+            ],
+            [
+                'link' => 'e',
+                'judul' => 'Surat Belum Pernah Nikah',
+            ],
+        ];
+
         
-        $sektor = Layanan::select('sektor')->distinct()->get();
-        return view('web.layanan.index', compact('sektor'));
+        $sektor = Layanan::select('kategori')->distinct()->get();
+        // $semua_layanan = Layanan::pluck('nama_layanan')->toArray();
+        $semua_layanan = Layanan::select('id','nama_layanan')->get();
+
+        return view('web.layanan.index', compact('sektor','layanan_populer','semua_layanan'));
     }
     public function sektor($sektor)
     {
@@ -37,8 +63,9 @@ class LayananController extends Controller
             // Redirect to a specific route if session does not exist
             return redirect()->route('index');
         }
-        $layanan = Layanan::with('persyaratan')->where('sektor', $sektor)->get();
-        return view('web.layanan.sektor', compact('layanan', 'sektor'));
+        $layanan = Layanan::with('persyaratan')->where('kategori', $sektor)->get();
+        $semua_layanan = Layanan::pluck('nama_layanan')->toArray();
+        return view('web.layanan.sektor', compact('layanan', 'sektor','semua_layanan'));
     }
     public function detail($id)
     {
