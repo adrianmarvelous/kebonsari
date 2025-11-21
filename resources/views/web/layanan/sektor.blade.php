@@ -42,10 +42,10 @@
             {{-- <input type="text" id="searchBox" class="form-control" placeholder="Cari layanan..."> --}}
             
     {{-- SEARCH INPUT --}}
-    <div class="position-relative mb-3">
-        <input type="text" id="layananInput" class="form-control" placeholder="Cari layanan...">
-        <div id="datalistOptions" class="custom-datalist"></div>
-    </div>
+        <div class="position-relative mb-3">
+            <input type="text" id="layananInput" class="form-control" placeholder="Cari layanan..." autocomplete="off">
+            <div id="datalistOptions" class="custom-datalist"></div>
+        </div>
             <ul id="suggestions" class="list-group position-absolute w-100" style="z-index:1000;"></ul>
             
             <p class="text-center" style="margin-top: 100px;font-size:3rem">Pilih Layanan {{ $sektor }}</p>
@@ -71,54 +71,54 @@
 <script>
     const data = @json($semua_layanan);
 
-const input = document.getElementById("layananInput");
-const datalist = document.getElementById("datalistOptions");
+    const input = document.getElementById("layananInput");
+    const datalist = document.getElementById("datalistOptions");
 
-input.addEventListener("input", function () {
-    const value = this.value.toLowerCase();
-    datalist.innerHTML = "";
+    input.addEventListener("input", function () {
+        const value = this.value.toLowerCase();
+        datalist.innerHTML = "";
 
-    if (value === "") {
-        datalist.style.display = "none";
-        return;
-    }
-
-    // Filter berdasarkan nama_layanan
-    const filtered = data.filter(item =>
-        item.nama_layanan.toLowerCase().includes(value)
-    );
-
-    if (filtered.length === 0) {
-        datalist.style.display = "none";
-        return;
-    }
-
-    filtered.forEach(item => {
-        const div = document.createElement("div");
-
-        // Tampilkan NAMA layanan
-        div.textContent = item.nama_layanan;
-
-        // Simpan ID saat klik
-        div.onclick = () => {
-            input.value = item.nama_layanan;
-            input.setAttribute("data-id", item.id); // <-- SIMPAN ID DI ATTRIBUTE
+        if (value === "") {
             datalist.style.display = "none";
+            return;
+        }
 
-            console.log("Selected ID:", item.id);
-        };
+        // Filter berdasarkan nama_layanan
+        const filtered = data.filter(item =>
+            item.nama_layanan.toLowerCase().includes(value)
+        );
 
-        datalist.appendChild(div);
+        if (filtered.length === 0) {
+            datalist.style.display = "none";
+            return;
+        }
+
+        filtered.forEach(item => {
+            const div = document.createElement("div");
+
+            // Tampilkan NAMA layanan
+            div.textContent = item.nama_layanan;
+
+            // Simpan ID saat klik
+            div.onclick = () => {
+                input.value = item.nama_layanan;
+                input.setAttribute("data-id", item.id); // <-- SIMPAN ID DI ATTRIBUTE
+                datalist.style.display = "none";
+
+                console.log("Selected ID:", item.id);
+            };
+
+            datalist.appendChild(div);
+        });
+
+        datalist.style.display = "block";
     });
 
-    datalist.style.display = "block";
-});
-
-document.addEventListener("click", function (e) {
-    if (!input.contains(e.target)) {
-        datalist.style.display = "none";
-    }
-});
+    document.addEventListener("click", function (e) {
+        if (!input.contains(e.target)) {
+            datalist.style.display = "none";
+        }
+    });
 
 </script>
 @endsection

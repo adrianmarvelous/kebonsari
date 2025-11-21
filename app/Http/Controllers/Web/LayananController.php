@@ -102,14 +102,18 @@ class LayananController extends Controller
     }
     public function search(Request $request)
     {
+        $validated = $request->validate([
+            'layanan' => ['required', 'string', 'max:255', new SafeInput],
+        ]);
         try {
-            $query = $request->get('q');
 
-            $layanans = Layanan::where('nama_layanan', 'LIKE', "%{$query}%")
+            $layanans = Layanan::with('persyaratan')
+                                ->where('nama_layanan', 'LIKE', "%{$validated['layanan']}%")
                                 ->limit(10)
-                                ->get(['id', 'nama_layanan','sektor']);
-
-            return response()->json($layanans);
+                                ->get();
+            // dd($layanan);
+            // return response()->json($layanans);
+            return view('web.layanan.hasil_search',compact('layanans'));
         } catch (\Exception $e) {
             \Log::error("Search error: " . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
