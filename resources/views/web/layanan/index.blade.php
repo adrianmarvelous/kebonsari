@@ -48,10 +48,11 @@
     <div>
         <h1 class="text-center">Pelayanan Terpopuler</h1>
         <div class="d-flex justify-content-center flex-wrap">
-
             @foreach ($layanan_populer as $item)
                 <div class="text-center m-1">
-                    <a class="btn btn-primary" style="width: 60px;height:60px" href=""></a>
+                    <a class="btn btn-primary" href="{{ route($item['route'],$item['params']) }}">
+                        <i class="{{ $item['icon'] }} fa-3x"></i>
+                    </a>
                     <div style="width: 100px">
                         <p class="text-wrap small fs-md-6 fs-lg-5">{{ $item['judul'] }}</p>
                     </div>

@@ -29,23 +29,33 @@ class LayananController extends Controller
 
         $layanan_populer = [
             [
-                'link' => 'a',
+                'route' => 'web.layanan.detail',
+                'params' => ['id' => 1],
+                'icon' => 'fa fa-user',
                 'judul' => 'Akta Kelahiran'
             ],
             [
-                'link' => 'b',
+                'route' => 'web.layanan.detail',
+                'params' => ['id' => 45],
+                'icon' => 'fa fa-id-card',
                 'judul' => 'Pendaftaran KTP Elektronik',
             ],
             [
-                'link' => 'c',
+                'route' => 'web.layanan.detail',
+                'params' => ['id' => 47],
+                'icon' => 'fa fa-file',
                 'judul' => 'Perubahan Biodata',
             ],
             [
-                'link' => 'd',
+                'route' => 'web.layanan.detail',
+                'params' => ['id' => 2],
+                'icon' => 'fa fa-envelope',
                 'judul' => 'Surat Pengantar Nikah',
             ],
             [
-                'link' => 'e',
+                'route' => 'web.layanan.detail',
+                'params' => ['id' => 4],
+                'icon' => 'fa fa-envelope',
                 'judul' => 'Surat Belum Pernah Nikah',
             ],
         ];
