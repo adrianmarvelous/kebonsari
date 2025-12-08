@@ -67,7 +67,11 @@
        ======================== --}}
     <div class="mt-4">
         <h1 class="text-center">Pelacakan</h1>
-        <a class="btn btn-primary w-100" href="">PELACAKAN LAYANAN</a>
+        <button class="btn btn-primary w-100" id="scanBtn">PELACAKAN LAYANAN</button>
+        {{-- <a class="btn btn-primary w-100" href="">PELACAKAN LAYANAN</a> --}}
+        <div id="reader" style="width:300px; display:none;"></div>
+
+<p>Result: <span id="result"></span></p>
     </div>
 
     {{-- ========================
@@ -142,6 +146,37 @@
             datalist.style.display = "none";
         }
     });
+</script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<script>
+document.getElementById("scanBtn").addEventListener("click", function () {
+
+    document.getElementById("reader").style.display = "block";
+
+    const html5QrCode = new Html5Qrcode("reader");
+
+    html5QrCode.start(
+        { facingMode: "environment" }, // Back camera
+        {
+            fps: 10,
+            qrbox: 250
+        },
+        qrCodeMessage => {
+            // When QR code detected
+            document.getElementById("result").innerText = qrCodeMessage;
+
+            // Stop scanning
+            html5QrCode.stop();
+            document.getElementById("reader").style.display = "none";
+        },
+        errorMessage => {
+            // scanning errors (ignore)
+        }
+    ).catch(err => {
+        console.log("Camera error: ", err);
+    });
+});
 </script>
 
 @endsection
