@@ -29,6 +29,12 @@
     background: #eee;
 }
 </style>
+<style>
+#reader video {
+    width: 100% !important;
+    height: auto !important;
+}
+</style>
 
 <div class="p-3 card shadow m-3">
 
@@ -69,7 +75,7 @@
         <h1 class="text-center">Pelacakan</h1>
         <button class="btn btn-primary w-100" id="scanBtn">PELACAKAN LAYANAN</button>
         {{-- <a class="btn btn-primary w-100" href="">PELACAKAN LAYANAN</a> --}}
-        <div id="reader" style="width:300px; display:none;"></div>
+        <div id="reader" style="width:100%; height:350px; display:none;"></div>
 
 <p>Result: <span id="result"></span></p>
     </div>
