@@ -156,31 +156,48 @@
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <script>
-    document.getElementById("scanBtn").addEventListener("click", function () {
+    let scannerActive = false;
+let html5QrCode; // simpan instance agar bisa stop
+
+document.getElementById("scanBtn").addEventListener("click", function () {
 
     const reader = document.getElementById("reader");
+
+    // === Jika scanner sedang aktif → matikan ===
+    if (scannerActive) {
+        html5QrCode.stop().then(() => {
+            reader.style.display = "none";
+            scannerActive = false;
+            console.log("Scanner stopped.");
+        });
+        return;
+    }
+
+    // === Jika scanner belum aktif → hidupkan ===
     reader.style.display = "block";
 
     setTimeout(() => {
-        const html5QrCode = new Html5Qrcode("reader");
+        html5QrCode = new Html5Qrcode("reader");
+        scannerActive = true;
 
         html5QrCode.start(
             { facingMode: "environment" },
             { fps: 10, qrbox: 250 },
             qrCodeMessage => {
 
-                // Tampilkan hasil
                 document.getElementById("result").innerText = qrCodeMessage;
 
-                // STOP scanner
+                // AUTO STOP setelah scan
                 html5QrCode.stop();
                 reader.style.display = "none";
+                scannerActive = false;
 
-                // === >>> AUTO OPEN NEW TAB <<< ===
-                window.open(qrCodeMessage, "_blank");
+                // Optional redirect
+                // window.open(qrCodeMessage, "_blank");
             },
             err => {}
         );
+
     }, 300);
 });
 
