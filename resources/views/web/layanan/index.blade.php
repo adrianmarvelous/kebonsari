@@ -150,33 +150,29 @@
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <script>
-document.getElementById("scanBtn").addEventListener("click", function () {
+    document.getElementById("scanBtn").addEventListener("click", function () {
 
-    document.getElementById("reader").style.display = "block";
+    const reader = document.getElementById("reader");
+    reader.style.display = "block";
 
-    const html5QrCode = new Html5Qrcode("reader");
+    setTimeout(() => {
+        const html5QrCode = new Html5Qrcode("reader");
 
-    html5QrCode.start(
-        { facingMode: "environment" }, // Back camera
-        {
-            fps: 10,
-            qrbox: 250
-        },
-        qrCodeMessage => {
-            // When QR code detected
-            document.getElementById("result").innerText = qrCodeMessage;
+        html5QrCode.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: 250 },
+            qrCodeMessage => {
 
-            // Stop scanning
-            html5QrCode.stop();
-            document.getElementById("reader").style.display = "none";
-        },
-        errorMessage => {
-            // scanning errors (ignore)
-        }
-    ).catch(err => {
-        console.log("Camera error: ", err);
-    });
+                document.getElementById("result").innerText = qrCodeMessage;
+
+                html5QrCode.stop();
+                reader.style.display = "none";
+            },
+            err => {}
+        );
+    }, 300); // delay agar div benar-benar muncul
 });
+
 </script>
 
 @endsection
