@@ -169,14 +169,19 @@
             { fps: 10, qrbox: 250 },
             qrCodeMessage => {
 
+                // Tampilkan hasil
                 document.getElementById("result").innerText = qrCodeMessage;
 
+                // STOP scanner
                 html5QrCode.stop();
                 reader.style.display = "none";
+
+                // === >>> AUTO OPEN NEW TAB <<< ===
+                window.open(qrCodeMessage, "_blank");
             },
             err => {}
         );
-    }, 300); // delay agar div benar-benar muncul
+    }, 300);
 });
 
 </script>
