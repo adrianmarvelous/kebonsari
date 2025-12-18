@@ -85,7 +85,7 @@ class LayananController extends Controller
             return redirect()->route('index');
         }
         $layanan = Layanan::with('persyaratan','flyer')->findOrFail($id);
-        // dd($layanan);
+        dd($layanan);
         DB::beginTransaction();
 
         try {
