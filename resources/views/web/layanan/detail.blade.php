@@ -1,5 +1,22 @@
 @extends('index')
 @section('content')
+    <style>
+        .ratio-9x16 {
+            --bs-aspect-ratio: calc(16 / 9 * 100%);
+            /* Portrait mode */
+        }
+
+        .video-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .video-col {
+            flex: 1 1 50%;
+            /* each video always takes 50% width */
+            text-align: center;
+        }
+    </style>
     <div class="container">
         <div class="row p-3">
             <div class="card shadow p-3">
@@ -15,25 +32,18 @@
                     <li><?= $value['syarat'] ?></li>
                     <?php }?>
                 </ol>
-                <style>
-                    .ratio-9x16 {
-                        --bs-aspect-ratio: calc(16 / 9 * 100%);
-                        /* Portrait mode */
-                    }
+                @if ($layanan->flyer)
+                    @php
+                        if($layanan->kategori == 'SSW ALFA'){
+                            $flyerPath = asset('upload/FLYER/SSWALFA/' . $layanan->flyer->file);
+                        } else {
+                            $flyerPath = asset('upload/FLYER/KNG/' . $layanan->flyer->file);
+                        }
+                    @endphp
+                    <img src="{{ $flyerPath }}" alt="">
+                @endif
 
-                    .video-row {
-                        display: flex;
-                        gap: 20px;
-                    }
-
-                    .video-col {
-                        flex: 1 1 50%;
-                        /* each video always takes 50% width */
-                        text-align: center;
-                    }
-                </style>
-
-                <div class="video-row">
+                <div class="video-row mt-3">
 
                     @if ($layanan->kategori == 'SSW ALFA')
                         <div class="video-col d-flex justify-content-between flex-column">

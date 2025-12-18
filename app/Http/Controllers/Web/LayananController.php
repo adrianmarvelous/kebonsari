@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Models\Layanan;
 use App\Models\Visitor;
+use App\Models\Flyer;
 use App\Rules\SafeInput;
 
 
@@ -83,8 +84,8 @@ class LayananController extends Controller
             // Redirect to a specific route if session does not exist
             return redirect()->route('index');
         }
-        $layanan = Layanan::with('persyaratan')->findOrFail($id);
-        
+        $layanan = Layanan::with('persyaratan','flyer')->findOrFail($id);
+        // dd($layanan);
         DB::beginTransaction();
 
         try {
@@ -116,14 +117,20 @@ class LayananController extends Controller
             'layanan' => ['required', 'string', 'max:255', new SafeInput],
         ]);
         try {
+            $find_layanan = Layanan::where('nama_layanan',$validated['layanan'])
+                                ->first();
+            if($find_layanan){
+                return redirect()->route('web.layanan.detail', ['id' => $find_layanan->id]);
+            }else{
+                $layanans = Layanan::with('persyaratan')
+                                    ->where('nama_layanan', 'LIKE', "%{$validated['layanan']}%")
+                                    ->limit(10)
+                                    ->get();
+                // dd($layanan);
+                // return response()->json($layanans);
+                return view('web.layanan.hasil_search',compact('layanans'));
+            }
 
-            $layanans = Layanan::with('persyaratan')
-                                ->where('nama_layanan', 'LIKE', "%{$validated['layanan']}%")
-                                ->limit(10)
-                                ->get();
-            // dd($layanan);
-            // return response()->json($layanans);
-            return view('web.layanan.hasil_search',compact('layanans'));
         } catch (\Exception $e) {
             \Log::error("Search error: " . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);

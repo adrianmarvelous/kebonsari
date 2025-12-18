@@ -22,4 +22,8 @@ class Layanan extends Model
     {
         return $this->hasMany(Persyaratan::class, 'id_layanan');
     }
+    public function flyer()
+    {
+        return $this->hasOne(Flyer::class, 'id_layanan');
+    }
 }
