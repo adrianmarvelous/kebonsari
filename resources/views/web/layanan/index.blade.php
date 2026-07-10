@@ -96,7 +96,7 @@
                 <p class="text-muted mb-3">Ketik nama layanan yang Anda cari</p>
                 <form id="formLayanan" action="{{ route('web.layanan.search') }}" method="GET">
                     <div class="position-relative">
-                        <input type="text" id="layananInput" name="layanan" class="form-control form-control-lg" placeholder="Cari layanan..." style="border-radius: 14px; padding-left: 48px;">
+                        <input type="text" id="layananInput" name="layanan" class="form-control form-control-lg" placeholder="Cari layanan..." autocomplete="off" style="border-radius: 14px; padding-left: 48px;">
                         <i class="fas fa-search" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--gray);"></i>
                         <div id="datalistOptions" class="custom-datalist"></div>
                     </div>
