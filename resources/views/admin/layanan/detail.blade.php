@@ -3,75 +3,88 @@
 
 @section('content')
 
-    <div class="container-fluid card shadow">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="mt-4">Detail Layanan</h1>
+    <div class="card-modern">
+        <div class="card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+            <h5><i class="fas fa-info-circle text-primary me-2"></i>Detail Layanan</h5>
+            <div class="d-flex gap-1">
+                <a href="{{ route('layanan.edit',['layanan' => $layanan->id]) }}" class="btn btn-admin btn-admin-warning btn-admin-sm">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <form action="{{ route('layanan.destroy', $layanan->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-admin btn-admin-danger btn-admin-sm" onclick="return confirm('Yakin hapus layanan {{ $layanan->nama_layanan }}?')">
+                        <i class="fas fa-trash"></i> Hapus
+                    </button>
+                </form>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-2">
-                <p class="fw-bold">Kategori</p>
+        <div class="card-body-custom">
+            <div class="row mb-3">
+                <div class="col-lg-2">
+                    <p class="form-label-modern">Kategori</p>
+                </div>
+                <div class="col-lg-10">
+                    <p class="fw-semibold">{{ $layanan->kategori }}</p>
+                </div>
             </div>
-            <div class="col-lg-10">
-                <p>{{ $layanan->kategori }}</p>
+            <div class="row mb-3">
+                <div class="col-lg-2">
+                    <p class="form-label-modern">Sektor</p>
+                </div>
+                <div class="col-lg-10">
+                    <p class="fw-semibold">{{ $layanan->sektor }}</p>
+                </div>
             </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-lg-2">
-                <p class="fw-bold">Sektor</p>
+            <div class="row mb-3">
+                <div class="col-lg-2">
+                    <p class="form-label-modern">Nama Layanan</p>
+                </div>
+                <div class="col-lg-10">
+                    <p class="fw-semibold">{{ $layanan->nama_layanan }}</p>
+                </div>
             </div>
-            <div class="col-lg-10">
-                <p>{{ $layanan->sektor }}</p>
+            <div class="row mb-3">
+                <div class="col-lg-2">
+                    <p class="form-label-modern">Video</p>
+                </div>
+                <div class="col-lg-10">
+                    @if(!empty($layanan->video))
+                        <iframe src="https://drive.google.com/file/d/<?= htmlentities($layanan['video']) ?>/preview" width="100%" height="480" allow="autoplay" allowfullscreen style="border-radius: 12px;">
+                        </iframe>
+                    @else
+                        <p class="text-muted">Tidak ada video.</p>
+                    @endif
+                </div>
             </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-lg-2">
-                <p class="fw-bold">Nama Layanan</p>
+            <div class="row mb-3">
+                <div class="col-lg-2">
+                    <p class="form-label-modern">Poster</p>
+                </div>
+                <div class="col-lg-10">
+                    @if(!empty($layanan->poster))
+                        <img src="{{ $layanan->poster ? asset('storage/' . $layanan->poster) : 'https://via.placeholder.com/150' }}" alt="Poster" class="img-fluid rounded" style="max-width: 500px;">
+                    @else
+                        <p class="text-muted">Tidak ada poster.</p>
+                    @endif
+                </div>
             </div>
-            <div class="col-lg-10">
-                <p>{{ $layanan->nama_layanan }}</p>
+            <div class="row mb-3">
+                <div class="col-lg-2">
+                    <p class="form-label-modern">Persyaratan</p>
+                </div>
+                <div class="col-lg-10">
+                    @if($layanan->persyaratan->isEmpty())
+                        <p class="text-muted">Tidak ada persyaratan.</p>
+                    @else
+                        <ul class="list-group list-group-flush">
+                            @foreach($layanan->persyaratan as $persyaratan)
+                                <li class="list-group-item px-0"><i class="fas fa-check-circle text-success me-2"></i>{{ $persyaratan->syarat }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
             </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-lg-2">
-                <p class="fw-bold">Video</p>
-            </div>
-            <div class="col-lg-10">
-                @if(!empty($layanan->video))
-                    <iframe src="https://drive.google.com/file/d/<?= htmlentities($layanan['video']) ?>/preview"  width="auto" height="480" allow="autoplay" allowfullscreen>
-                    </iframe>
-                @endif
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-lg-2">
-                <p class="fw-bold">Poster</p>
-            </div>
-            <div class="col-lg-10">
-                @if(!empty($layanan->poster))
-                    <img src="{{ $layanan->poster ? asset('storage/' . $layanan->poster) : 'https://via.placeholder.com/150' }}" alt="Poster" width="500" class="img-fluid">
-                @endif
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-lg-2">
-                <p class="fw-bold">Persyaratan</p>
-            </div>
-            <div class="col-lg-10">
-                @if($layanan->persyaratan->isEmpty())
-                    <p>Tidak ada persyaratan.</p>
-                @else
-                    <ul>
-                        @foreach($layanan->persyaratan as $persyaratan)
-                            <li>{{ $persyaratan->syarat }}</li>
-                        @endforeach
-                    </ul>
-                @endif
-            </div>
-        </div>
-        <div class="d-flex justify-content-end m-3 p-3">
-            <a href="{{ route('layanan.edit',['layanan' => $layanan->id]) }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="bx bx-edit"></i></a>
         </div>
     </div>
 

@@ -1,374 +1,1053 @@
-{{-- <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <title>Admin - Kelurahan Kebonsari</title>
+    <link rel="icon" href="{{ asset('templetes/kaiadmin-lite/assets/img/kaiadmin/favicon.ico') }}" type="image/x-icon" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Summernote -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
+
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d47a1;
+            --primary-light: #e8f0fe;
+            --accent: #34a853;
+            --accent-light: #e6f4ea;
+            --warning-color: #fbbc04;
+            --danger-color: #ea4335;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+        }
+
+        * {
+            font-family: 'Inter', 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .admin-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(180deg, #0d47a1 0%, #1a73e8 100%);
+            z-index: 1040;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+        }
+        .admin-sidebar .sidebar-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: var(--header-height);
+        }
+        .admin-sidebar .sidebar-header .brand {
+            color: white;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .admin-sidebar .sidebar-header .brand i {
+            font-size: 1.5rem;
+        }
+        .admin-sidebar .sidebar-header .brand span {
+            color: rgba(255,255,255,0.8);
+        }
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .sidebar-toggle-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .admin-sidebar .sidebar-menu {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 12px;
+        }
+        .admin-sidebar .sidebar-menu::-webkit-scrollbar {
+            width: 4px;
+        }
+        .admin-sidebar .sidebar-menu::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+        .admin-sidebar .menu-label {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            padding: 16px 12px 8px;
+        }
+        .admin-sidebar .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .admin-sidebar .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .admin-sidebar .menu-item.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-weight: 600;
+        }
+        .admin-sidebar .menu-item i {
+            width: 22px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .admin-sidebar .sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .admin-sidebar .sidebar-footer .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            cursor: pointer;
+            color: rgba(255,255,255,0.8);
+        }
+        .admin-sidebar .sidebar-footer .user-info:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .admin-sidebar .sidebar-footer .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: white;
+        }
+        .admin-sidebar .sidebar-footer .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+        .admin-sidebar .sidebar-footer .user-details .name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .admin-sidebar .sidebar-footer .user-details .role {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .admin-main {
+            margin-left: var(--sidebar-width);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+        .admin-main .top-navbar {
+            background: white;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+        }
+        .admin-main .top-navbar .page-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        .admin-main .top-navbar .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .admin-main .top-navbar .navbar-right .nav-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+            position: relative;
+        }
+        .admin-main .top-navbar .navbar-right .nav-icon:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .admin-main .top-navbar .navbar-right .user-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 12px 6px 6px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .admin-main .top-navbar .navbar-right .user-dropdown:hover {
+            background: var(--light-gray);
+        }
+        .admin-main .top-navbar .navbar-right .user-dropdown .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .admin-content {
+            padding: 24px 30px;
+        }
+
+        /* ===== MODERN CARDS ===== */
+        .card-modern {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .card-modern:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        .card-modern .card-header-custom {
+            padding: 20px 24px 0;
+            border: none;
+        }
+        .card-modern .card-header-custom h5 {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        .card-modern .card-body-custom {
+            padding: 20px 24px 24px;
+        }
+
+        /* ===== STAT CARDS ===== */
+        .stat-card {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+        }
+        .stat-card .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .stat-card .stat-icon.blue {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .stat-card .stat-icon.green {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+        .stat-card .stat-icon.orange {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        .stat-card .stat-icon.purple {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        .stat-card .stat-info {
+            flex: 1;
+        }
+        .stat-card .stat-info .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.2;
+        }
+        .stat-card .stat-info .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        /* ===== TABLES ===== */
+        .table-admin {
+            margin-bottom: 0;
+        }
+        .table-admin thead th {
+            background: var(--light-gray);
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 16px;
+            border-bottom: none;
+        }
+        .table-admin tbody td {
+            padding: 12px 16px;
+            vertical-align: middle;
+            font-size: 0.9rem;
+            border-color: #f0f0f0;
+        }
+        .table-admin tbody tr:hover {
+            background: #f8faff;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-admin {
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-admin:hover {
+            transform: translateY(-1px);
+        }
+        .btn-admin-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-admin-primary:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+        .btn-admin-success {
+            background: var(--accent);
+            color: white;
+        }
+        .btn-admin-success:hover {
+            background: #2d8f47;
+            color: white;
+        }
+        .btn-admin-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+        .btn-admin-danger:hover {
+            background: #d33426;
+            color: white;
+        }
+        .btn-admin-warning {
+            background: var(--warning-color);
+            color: #333;
+        }
+        .btn-admin-warning:hover {
+            background: #e5a800;
+            color: #333;
+        }
+        .btn-admin-info {
+            background: #17a2b8;
+            color: white;
+        }
+        .btn-admin-info:hover {
+            background: #138496;
+            color: white;
+        }
+        .btn-admin-sm {
+            padding: 6px 14px;
+            font-size: 0.8rem;
+        }
+
+        /* ===== ALERTS ===== */
+        .alert-modern {
+            border: none;
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-size: 0.9rem;
+        }
+        .alert-modern.alert-success {
+            background: var(--accent-light);
+            color: #1e7e34;
+        }
+        .alert-modern.alert-danger {
+            background: #fce4e4;
+            color: var(--danger-color);
+        }
+
+        /* ===== FORMS ===== */
+        .form-control-modern {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .form-control-modern:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+        .form-label-modern {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-modern .modal-content {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .modal-modern .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 16px 16px 0 0;
+            padding: 20px 24px;
+            border: none;
+        }
+        .modal-modern .modal-header .modal-title {
+            color: white;
+            font-weight: 700;
+        }
+        .modal-modern .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+        .modal-modern .modal-body {
+            padding: 24px;
+        }
+        .modal-modern .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+            .admin-sidebar.show {
+                transform: translateX(0);
+            }
+            .admin-main {
+                margin-left: 0;
+            }
+            .admin-content {
+                padding: 16px;
+            }
+            .admin-main .top-navbar {
+                padding: 0 16px;
+            }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 1035;
+            }
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+        @media (min-width: 769px) {
+            .sidebar-overlay {
+                display: none !important;
+            }
+            .mobile-toggle {
+                display: none !important;
+            }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Chart container */
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        /* DataTables custom */
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            border: 2px solid #e5e7eb !important;
+            border-radius: 10px !important;
+            padding: 6px 12px !important;
+        }
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px var(--primary-light) !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border-radius: 8px !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: var(--primary) !important;
+            border-color: var(--primary) !important;
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+            <a href="{{ route('dashboard') }}" class="brand">
+                <i class="fas fa-city"></i>
+                Admin <span>Panel</span>
+            </a>
+            <button class="sidebar-toggle-btn d-none d-md-block" id="sidebarCollapse">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="sidebar-toggle-btn d-md-none" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-menu">
+            <div class="menu-label">Menu</div>
+
+            <a href="{{ route('dashboard') }}" class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <i class="fas fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+
+            @foreach ($menus as $menu)
+            <a href="{{ route($menu->url) }}" class="menu-item {{ request()->routeIs(str_replace('.index', '.*', $menu->url)) ? 'active' : '' }}">
+                <i class="fas fa-{{ $menu->icon }}"></i>
+                <span>{{ $menu->name }}</span>
+            </a>
+            @endforeach
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-info" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
                 </div>
+                <div class="user-details">
+                    <div class="name">{{ session('nama') }}</div>
+                    <div class="role">{{ session('role') }}</div>
+                </div>
+                <i class="fas fa-sign-out-alt" style="font-size: 0.9rem; opacity: 0.6;"></i>
             </div>
         </div>
-    </div>
-</x-app-layout> --}}
-<!doctype html>
+    </aside>
 
-<html
-  lang="en"
-  class="layout-menu-fixed layout-compact"
-  data-assets-path="../assets/"
-  data-template="vertical-menu-template-free">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
-    <title>Dashboard</title>
-
-    <meta name="description" content="" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/sneat/assets/img/favicon/favicon.ico') }}" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet" />
-
-    <link rel="stylesheet" href="{{ asset('assets/sneat/assets/vendor/fonts/iconify-icons.css') }}" />
-
-    <!-- Core CSS -->
-    <!-- build:css assets/vendor/css/theme.css  -->
-
-    <link rel="stylesheet" href="{{ asset('assets/sneat/assets/vendor/css/core.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/sneat/assets/css/demo.css') }}" />
-
-    <!-- Vendors CSS -->
-
-    <link rel="stylesheet" href="{{ asset('assets/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-
-    <!-- endbuild -->
-
-    <link rel="stylesheet" href="{{ asset('assets/sneat/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
-
-    <!-- Page CSS -->
-
-    <!-- Helpers -->
-    <script src="{{ asset('assets/sneat/assets/vendor/js/helpers.js') }}"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-
-    <script src="{{ asset('assets/sneat/assets/js/config.js') }}"></script>
-    
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
-    
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  </head>
-  <body>
-    <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-        <!-- Menu -->
-
-        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-          <div class="app-brand demo">
-            <a href="index.html" class="app-brand-link">
-              <span class="app-brand-logo demo">
-                <span class="text-primary">
-                  <svg
-                    width="25"
-                    viewBox="0 0 25 42"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <defs>
-                      <path
-                        d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.63468769,24.5493413 C0.445452254,26.3002124 0.0884951797,28.5083815 1.56381646,31.1738486 C2.83770406,32.8170431 5.20850219,33.2640127 7.09180128,32.5391577 C8.347334,32.0559211 11.4559176,30.0011079 16.4175519,26.3747182 C18.0338572,24.4997857 18.6973423,22.4544883 18.4080071,20.2388261 C17.963753,17.5346866 16.1776345,15.5799961 13.0496516,14.3747546 L10.9194936,13.4715819 L18.6192054,7.984237 L13.7918663,0.358365126 Z"
-                        id="path-1"></path>
-                      <path
-                        d="M5.47320593,6.00457225 C4.05321814,8.216144 4.36334763,10.0722806 6.40359441,11.5729822 C8.61520715,12.571656 10.0999176,13.2171421 10.8577257,13.5094407 L15.5088241,14.433041 L18.6192054,7.984237 C15.5364148,3.11535317 13.9273018,0.573395879 13.7918663,0.358365126 C13.5790555,0.511491653 10.8061687,2.3935607 5.47320593,6.00457225 Z"
-                        id="path-3"></path>
-                      <path
-                        d="M7.50063644,21.2294429 L12.3234468,23.3159332 C14.1688022,24.7579751 14.397098,26.4880487 13.008334,28.506154 C11.6195701,30.5242593 10.3099883,31.790241 9.07958868,32.3040991 C5.78142938,33.4346997 4.13234973,34 4.13234973,34 C4.13234973,34 2.75489982,33.0538207 2.37032616e-14,31.1614621 C-0.55822714,27.8186216 -0.55822714,26.0572515 -4.05231404e-15,25.8773518 C0.83734071,25.6075023 2.77988457,22.8248993 3.3049379,22.52991 C3.65497346,22.3332504 5.05353963,21.8997614 7.50063644,21.2294429 Z"
-                        id="path-4"></path>
-                      <path
-                        d="M20.6,7.13333333 L25.6,13.8 C26.2627417,14.6836556 26.0836556,15.9372583 25.2,16.6 C24.8538077,16.8596443 24.4327404,17 24,17 L14,17 C12.8954305,17 12,16.1045695 12,15 C12,14.5672596 12.1403557,14.1461923 12.4,13.8 L17.4,7.13333333 C18.0627417,6.24967773 19.3163444,6.07059163 20.2,6.73333333 C20.3516113,6.84704183 20.4862915,6.981722 20.6,7.13333333 Z"
-                        id="path-5"></path>
-                    </defs>
-                    <g id="g-app-brand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                      <g id="Brand-Logo" transform="translate(-27.000000, -15.000000)">
-                        <g id="Icon" transform="translate(27.000000, 15.000000)">
-                          <g id="Mask" transform="translate(0.000000, 8.000000)">
-                            <mask id="mask-2" fill="white">
-                              <use xlink:href="#path-1"></use>
-                            </mask>
-                            <use fill="currentColor" xlink:href="#path-1"></use>
-                            <g id="Path-3" mask="url(#mask-2)">
-                              <use fill="currentColor" xlink:href="#path-3"></use>
-                              <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-3"></use>
-                            </g>
-                            <g id="Path-4" mask="url(#mask-2)">
-                              <use fill="currentColor" xlink:href="#path-4"></use>
-                              <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use>
-                            </g>
-                          </g>
-                          <g
-                            id="Triangle"
-                            transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
-                            <use fill="currentColor" xlink:href="#path-5"></use>
-                            <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use>
-                          </g>
-                        </g>
-                      </g>
-                    </g>
-                  </svg>
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="admin-main">
+        <!-- Top Navbar -->
+        <nav class="top-navbar">
+            <div class="d-flex align-items-center gap-3">
+                <button class="sidebar-toggle-btn mobile-toggle d-md-none" id="sidebarOpen" style="color: var(--dark);">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <span class="page-title">
+                    @if (request()->routeIs('dashboard'))
+                        Dashboard
+                    @elseif (request()->routeIs('users.*'))
+                        Manajemen User
+                    @elseif (request()->routeIs('layanan.*'))
+                        Layanan
+                    @elseif (request()->routeIs('info.*'))
+                        Info
+                    @elseif (request()->routeIs('pengunjung.*'))
+                        Pengunjung
+                    @elseif (request()->routeIs('agenda.*'))
+                        Agenda
+                    @else
+                        Admin Panel
+                    @endif
                 </span>
-              </span>
-              <span class="app-brand-text demo menu-text fw-bold ms-2">Sneat</span>
-            </a>
-
-            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-              <i class="bx bx-chevron-left d-block d-xl-none align-middle"></i>
-            </a>
-          </div>
-
-          <div class="menu-divider mt-0"></div>
-
-          <div class="menu-inner-shadow"></div>
-
-          <ul class="menu-inner py-1">
-            <!-- Apps & Pages -->
-            <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Menu</span>
-            </li>
-            @foreach ($menus as $menu)
-            <li class="menu-item {{ request()->routeIs(str_replace('.index', '.*', $menu->url)) ? 'active' : '' }}">
-              <a href="{{ route($menu->url) }}" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-{{ $menu->icon }}"></i>
-                  <div class="text-truncate" data-i18n="Email">{{ $menu->name }}</div>
-              </a>
-            </li>
-            @endforeach
-
-          </ul>
-        </aside>
-        <!-- / Menu -->
-
-        <!-- Layout container -->
-        <div class="layout-page">
-          <!-- Navbar -->
-
-          <nav
-            class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-            id="layout-navbar">
-            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
-              <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
-                <i class="icon-base bx bx-menu icon-md"></i>
-              </a>
             </div>
-
-            <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
-              <!-- Search -->
-              <div class="navbar-nav align-items-center me-auto">
-                <div class="nav-item d-flex align-items-center">
-                  <span class="w-px-22 h-px-22"><i class="icon-base bx bx-search icon-md"></i></span>
-                  <input
-                    type="text"
-                    class="form-control border-0 shadow-none ps-1 ps-sm-2 d-md-block d-none"
-                    placeholder="Search..."
-                    aria-label="Search..." />
-                </div>
-              </div>
-              <!-- /Search -->
-
-              <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow p-0"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown">
-                    <div class="avatar avatar-online">
-                      <img src="{{ asset('assets/sneat/assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <div class="d-flex">
-                          <div class="flex-shrink-0 me-3">
-                            <div class="avatar avatar-online">
-                              <img src="{{ asset('assets/sneat/assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="mb-0">{{ session('nama') }}</h6>
-                            <small class="text-body-secondary">{{ session('role') }}</small>
-                          </div>
+            <div class="navbar-right">
+                <a href="{{ route('index') }}" target="_blank" class="nav-icon" title="Lihat Website">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+                <div class="dropdown">
+                    <a href="#" class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="avatar">
+                            {{ substr(session('nama', 'A'), 0, 1) }}
                         </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1"></div>
-                    </li>
-                    {{-- <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base bx bx-user icon-md me-3"></i><span>My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base bx bx-cog icon-md me-3"></i><span>Settings</span>
-                      </a>
-                    </li> --}}
-                    <li>
-                      <div class="dropdown-divider my-1"></div>
-                    </li>
-                    <li>
-                      <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                          onclick="event.preventDefault(); this.closest('form').submit();">
-                            <i class="icon-base bx bx-power-off icon-md me-3"></i>
-                            <span>Log Out</span>
-                        </a>
-                      </form>
-
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
+                        <span class="d-none d-md-inline fw-semibold" style="font-size: 0.9rem;">{{ session('nama') }}</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--gray);"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="border: none; border-radius: 12px; padding: 8px;">
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}" id="logoutForm">
+                                @csrf
+                                <a class="dropdown-item py-2 px-3" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); this.closest('form').submit();"
+                                    style="border-radius: 8px; color: var(--danger-color);">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Log Out
+                                </a>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             </div>
-          </nav>
+        </nav>
 
-          <!-- / Navbar -->
-
-          <!-- Content wrapper -->
-          <div class="content-wrapper">
-            <!-- Content -->
-            
-            <div class="container-xxl flex-grow-1 container-p-y">
-              @if ($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bx bx-error-circle me-2"></i>
-                    <strong>Terjadi kesalahan!</strong>
-                    <ul class="mb-0">
+        <!-- Content -->
+        <div class="admin-content">
+            <!-- Alert Messages -->
+            @if ($errors->any())
+                <div class="alert alert-modern alert-danger alert-dismissible fade show" role="alert">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <strong>Terjadi kesalahan!</strong>
+                    </div>
+                    <ul class="mb-0 mt-2 ps-3">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-              @endif
+            @endif
 
-              @foreach (['success' => 'check-circle', 'error' => 'error-circle'] as $type => $icon)
+            @foreach (['success' => 'check-circle', 'error' => 'exclamation-circle'] as $type => $icon)
                 @if (session($type))
-                  <div class="alert alert-{{ $type == 'error' ? 'danger' : $type }} alert-dismissible fade show" role="alert">
-                      <i class="bx bx-{{ $icon }} me-2"></i>
-                      {{ session($type) }}
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
+                    <div class="alert alert-modern alert-{{ $type == 'error' ? 'danger' : 'success' }} alert-dismissible fade show" role="alert">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-{{ $icon }}"></i>
+                            <span>{{ session($type) }}</span>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 @endif
-              @endforeach
-
-
+            @endforeach
 
             @if (Route::current()->getName() == 'dashboard')
-              
-            @endif
-            @yield('content')
-            </div>
-            <!-- / Content -->
-
-            <!-- Footer -->
-            <footer class="content-footer footer bg-footer-theme">
-              <div class="container-xxl">
-                <div
-                  class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-                  {{-- <div class="mb-2 mb-md-0">
-                    ©
-                    <script>
-                      document.write(new Date().getFullYear());
-                    </script>
-                  </div> --}}
+                <!-- Dashboard Stats -->
+                <div class="row g-4 mb-4 fade-in-up">
+                    <div class="col-xl-3 col-md-6">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number">{{ $totalUsers ?? 0 }}</div>
+                                <div class="stat-label">Total User</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number">{{ $totalLayanan ?? 0 }}</div>
+                                <div class="stat-label">Total Layanan</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="stat-card">
+                            <div class="stat-icon orange">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number">{{ $totalAgenda ?? 0 }}</div>
+                                <div class="stat-label">Total Agenda</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="stat-card">
+                            <div class="stat-icon purple">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-number">{{ $totalPengunjung ?? 0 }}</div>
+                                <div class="stat-label">Total Pengunjung</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </footer>
-            <!-- / Footer -->
 
-            <div class="content-backdrop fade"></div>
-          </div>
-          <!-- Content wrapper -->
+                <!-- Charts Row -->
+                <div class="row g-4 mb-4 fade-in-up">
+                    <div class="col-lg-6">
+                        <div class="card-modern">
+                            <div class="card-header-custom">
+                                <h5><i class="fas fa-chart-line text-primary me-2"></i>Pengunjung 6 Bulan Terakhir</h5>
+                            </div>
+                            <div class="card-body-custom">
+                                <div class="chart-container">
+                                    <canvas id="chartBulanan"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card-modern">
+                            <div class="card-header-custom">
+                                <h5><i class="fas fa-chart-pie text-primary me-2"></i>Layanan per Kategori</h5>
+                            </div>
+                            <div class="card-body-custom">
+                                <div class="chart-container">
+                                    <canvas id="chartKategori"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-4 fade-in-up">
+                    <div class="col-lg-6">
+                        <div class="card-modern">
+                            <div class="card-header-custom">
+                                <h5><i class="fas fa-chart-bar text-primary me-2"></i>Layanan Terpopuler</h5>
+                            </div>
+                            <div class="card-body-custom">
+                                <div class="chart-container" style="height: 280px;">
+                                    <canvas id="chartLayananPopuler"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card-modern">
+                            <div class="card-header-custom d-flex justify-content-between align-items-center">
+                                <h5><i class="fas fa-user-check text-primary me-2"></i>Pengunjung Terbaru</h5>
+                                @if(isset($latestVisitors) && count($latestVisitors) > 0)
+                                    <a href="{{ route('pengunjung.index') }}" class="btn btn-admin btn-admin-primary btn-admin-sm">Lihat Semua</a>
+                                @endif
+                            </div>
+                            <div class="card-body-custom">
+                                @if(isset($latestVisitors) && count($latestVisitors) > 0)
+                                    <div class="table-responsive" style="max-height: 260px;">
+                                        <table class="table table-admin">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama</th>
+                                                    <th>Layanan</th>
+                                                    <th>Tanggal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($latestVisitors as $visitor)
+                                                    <tr>
+                                                        <td class="fw-semibold">{{ $visitor->nama }}</td>
+                                                        <td>{{ $visitor->layanan->nama_layanan ?? '-' }}</td>
+                                                        <td>{{ date('d M Y', strtotime($visitor->created_at)) }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @else
+                                    <p class="text-muted text-center py-3 mb-0">Belum ada data pengunjung.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 fade-in-up">
+                    <div class="col-lg-12">
+                        <div class="card-modern">
+                            <div class="card-header-custom d-flex justify-content-between align-items-center">
+                                <h5><i class="fas fa-calendar-alt text-primary me-2"></i>Agenda Terbaru</h5>
+                                @if(isset($latestAgendas) && count($latestAgendas) > 0)
+                                    <a href="{{ route('agenda.index') }}" class="btn btn-admin btn-admin-primary btn-admin-sm">Lihat Semua</a>
+                                @endif
+                            </div>
+                            <div class="card-body-custom">
+                                @if(isset($latestAgendas) && count($latestAgendas) > 0)
+                                    <div class="table-responsive">
+                                        <table class="table table-admin">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama Agenda</th>
+                                                    <th>Tanggal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($latestAgendas as $agenda)
+                                                    <tr>
+                                                        <td class="fw-semibold">{{ $agenda->nama_agenda }}</td>
+                                                        <td>{{ date('d M Y', strtotime($agenda->created_at)) }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @else
+                                    <p class="text-muted text-center py-3 mb-0">Belum ada data agenda.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @yield('content')
         </div>
-        <!-- / Layout page -->
-      </div>
-
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    <!-- / Layout wrapper -->
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- Core JS -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="{{ asset('assets/sneat/assets/vendor/libs/jquery/jquery.js') }}"></script>
-    <script src="{{ asset('assets/sneat/assets/vendor/libs/popper/popper.js') }}"></script>
-    <script src="{{ asset('assets/sneat/assets/vendor/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-    <script src="{{ asset('assets/sneat/assets/vendor/js/menu.js') }}"></script>
-
-    <!-- Vendors JS -->
-    <script src="{{ asset('assets/sneat/assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
-
-    <!-- Main JS -->
-    <script src="{{ asset('assets/sneat/assets/js/main.js') }}"></script>
-
-    <!-- Page JS -->
-    <script src="{{ asset('assets/sneat/assets/js/dashboards-analytics.js') }}"></script>
-
-
-    <!-- Place this tag before closing body tag for github widget button. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <!-- Place this tag before closing body tag for github widget button. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    
-    <script>
-      new DataTable('#example');
-    </script>
-    
-    {{-- <script>
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch(error => console.error(error));
-    </script> --}}
+    <!-- Summernote -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+
+    <!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
     <script>
-      $(function () {
-        $('#summernote').summernote({
-          height: 200,
-          toolbar: [
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['table']],
-            ['view', ['codeview']]
-          ]
+        // Sidebar toggle
+        document.getElementById('sidebarOpen')?.addEventListener('click', function() {
+            document.getElementById('adminSidebar').classList.add('show');
+            document.getElementById('sidebarOverlay').classList.add('show');
         });
-      });
+        document.getElementById('sidebarClose')?.addEventListener('click', function() {
+            document.getElementById('adminSidebar').classList.remove('show');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        });
+        document.getElementById('sidebarOverlay')?.addEventListener('click', function() {
+            document.getElementById('adminSidebar').classList.remove('show');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        });
+
+        // ── Inisialisasi Chart ──
+        function initCharts() {
+            // 1. Chart Pengunjung Bulanan (Line)
+            const ctx1 = document.getElementById('chartBulanan')?.getContext('2d');
+            if (ctx1) {
+                new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: {!! json_encode($bulanLabels ?? []) !!},
+                        datasets: [{
+                            label: 'Pengunjung',
+                            data: {!! json_encode($bulanData ?? []) !!},
+                            borderColor: '#1a73e8',
+                            backgroundColor: 'rgba(26,115,232,0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#1a73e8',
+                            pointRadius: 4,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            // 2. Chart Kategori Layanan (Doughnut)
+            const ctx2 = document.getElementById('chartKategori')?.getContext('2d');
+            if (ctx2) {
+                const colors = ['#1a73e8', '#34a853', '#fbbc04', '#ea4335', '#7b1fa2', '#f57c00'];
+                new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: {!! json_encode($kategoriLabelArr ?? []) !!},
+                        datasets: [{
+                            data: {!! json_encode($kategoriDataArr ?? []) !!},
+                            backgroundColor: colors,
+                            borderWidth: 0,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { padding: 16, usePointStyle: true }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 3. Chart Layanan Terpopuler (Bar)
+            const ctx3 = document.getElementById('chartLayananPopuler')?.getContext('2d');
+            if (ctx3) {
+                new Chart(ctx3, {
+                    type: 'bar',
+                    data: {
+                        labels: {!! json_encode($layananLabelArr ?? []) !!},
+                        datasets: [{
+                            label: 'Jumlah',
+                            data: {!! json_encode($layananDataArr ?? []) !!},
+                            backgroundColor: ['#1a73e8', '#34a853', '#fbbc04', '#ea4335', '#7b1fa2'],
+                            borderRadius: 6,
+                            borderSkipped: false,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+                            y: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Run charts on page load
+        initCharts();
+
+        // Initialize Summernote
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+
+        // Initialize DataTables
+        $(document).ready(function() {
+            $('.table-datatable').each(function() {
+                if (!$.fn.DataTable.isDataTable(this)) {
+                    $(this).DataTable({
+                        language: {
+                            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+                        }
+                    });
+                }
+            });
+        });
+
+        // Auto-hide alerts
+        setTimeout(function() {
+            document.querySelectorAll('.alert-modern').forEach(function(el) {
+                let bsAlert = new bootstrap.Alert(el);
+                setTimeout(() => bsAlert.close(), 4000);
+            });
+        }, 5000);
     </script>
-  </body>
+</body>
 </html>
 

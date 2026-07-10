@@ -3,39 +3,39 @@
 
 @section('content')
 
-    <div class="container-fluid card shadow">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="mt-4">Layanan</h1>
-            </div>
-            <div class="mb-4">
-                <a class="btn btn-primary" href="{{ route('layanan.create') }}">Buat Layanan Baru</a>
-            </div>
+    <div class="card-modern">
+        <div class="card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+            <h5><i class="fas fa-handshake text-primary me-2"></i>Layanan</h5>
+            <a class="btn btn-admin btn-admin-primary" href="{{ route('layanan.create') }}">
+                <i class="fas fa-plus"></i> Buat Layanan Baru
+            </a>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped" id="example">
-                        <thead class="table-primary">
+        <div class="card-body-custom">
+            <div class="table-responsive">
+                <table class="table table-admin table-datatable">
+                    <thead>
+                        <tr>
                             <th>No</th>
                             <th>Sektor</th>
                             <th>Layanan</th>
                             <th>Aksi</th>
-                        </thead>
-                        <tbody>
-                            @foreach ($layanan as $key => $item)
-                                <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>{{ $item->sektor }}</td>
-                                    <td>{{ $item->nama_layanan }}</td>
-                                    <td>
-                                        <a class="btn btn-primary" href="{{ route('layanan.show',['layanan' => $item->id]) }}">Detail</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($layanan as $key => $item)
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $item->sektor }}</td>
+                                <td class="fw-semibold">{{ $item->nama_layanan }}</td>
+                                <td>
+                                    <a class="btn btn-admin btn-admin-primary btn-admin-sm" href="{{ route('layanan.show',['layanan' => $item->id]) }}">
+                                        <i class="fas fa-eye"></i> Detail
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
 

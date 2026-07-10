@@ -2,169 +2,183 @@
 
 
 @section('content')
-    <div class="container-fluid card shadow">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="">
-                    <h1 class="mt-4">Detail Agenda</h1>
-                </div>
-            </div>
+    <div class="card-modern">
+        <div class="card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+            <h5><i class="fas fa-calendar-alt text-primary me-2"></i>Detail Agenda</h5>
+            <a href="{{ route('agenda.index') }}" class="btn btn-admin btn-admin-primary btn-admin-sm">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </a>
         </div>
-        <div class="border border-3 rounded p-3 mt-3 mb-3">
-            <div class="row mb-3">
+        <div class="card-body-custom">
+            <!-- Info Agenda -->
+            <div class="row mb-4">
                 <div class="col-lg-3">
-                    <label for="" class="fw-bold">Nama Agenda</label>
+                    <label class="form-label-modern">Nama Agenda</label>
                 </div>
                 <div class="col-lg-9">
-                    <p>{{ $agenda->nama_agenda }}</p>
+                    <p class="fw-semibold">{{ $agenda->nama_agenda }}</p>
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-lg-3">
-                    <label for="" class="fw-bold">Foto Cover</label>
+                    <label class="form-label-modern">Foto Cover</label>
                 </div>
                 <div class="col-lg-9">
-                    <img class="w-100" src="{{ asset($agenda->foto_cover) }}" alt="">
+                    <img class="img-fluid rounded" src="{{ asset($agenda->foto_cover) }}" alt="Cover" style="max-height: 400px;">
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-4">
                 <div class="col-lg-3">
-                    <label for="" class="fw-bold">Narasi</label>
+                    <label class="form-label-modern">Narasi</label>
                 </div>
                 <div class="col-lg-9">
-                    <p>{!! $agenda->narasi !!}</p>
+                    <div class="p-3 bg-light rounded">
+                        {!! $agenda->narasi !!}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="border border-3 rounded p-3 mt-3 mb-3">
-            <div class="d-flex justify-content-between flex-wrap">
-                <div><h2>Lampiran</h2></div>
-                <div class="d-flex align-items-center">
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Upload Lampiran
-                    </button>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Upload Lampiran</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <hr class="my-4">
+
+            <!-- Lampiran -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                <h5 class="fw-bold mb-0"><i class="fas fa-paperclip text-primary me-2"></i>Lampiran</h5>
+                <button type="button" class="btn btn-admin btn-admin-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                    <i class="fas fa-upload"></i> Upload Lampiran
+                </button>
+            </div>
+
+            <!-- Upload Modal -->
+            <div class="modal fade modal-modern" id="uploadModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fas fa-upload me-2"></i>Upload Lampiran</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{{ route('agenda.upload_lampiran') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label-modern">Nama Lampiran</label>
+                                    <input class="form-control-modern w-100" type="text" name="nama" placeholder="Masukkan nama lampiran">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label-modern">File Lampiran</label>
+                                    <input class="form-control-modern w-100" type="file" name="lampiran" accept="image/*,.pdf">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="agenda_id" value="{{ $agenda->id }}">
+                                <button type="button" class="btn btn-admin btn-admin-secondary" data-bs-dismiss="modal" style="background:#e5e7eb;color:#333;">Tutup</button>
+                                <button type="submit" class="btn btn-admin btn-admin-primary">
+                                    <i class="fas fa-upload"></i> Upload
                                 </button>
                             </div>
-                                <form action="{{ route('agenda.upload_lampiran') }}" method="post" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="modal-body">
-                                            <label for="">Nama Lampiran</label>
-                                            <input class="form-control" type="text" name="nama">
-                                            <label class="mt-3" for="">Lampiran</label>
-                                            <input class="form-control" type="file" name="lampiran" accept="image/*,.pdf">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <input type="hidden" name="agenda_id" value="{{ $agenda->id }}">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                        <button type="submit" class="btn btn-primary">Upload Lampiran</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        </form>
                     </div>
-                    {{-- <button class="btn btn-primary">Upload Lampiran</button> --}}
                 </div>
             </div>
+
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-admin">
                     <thead>
-                        <tr class="table-primary">
-                            <td>No</td>
-                            <td>Nama File</td>
-                            <td>File</td>
-                            <td>Aksi</td>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama File</th>
+                            <th>File</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($agenda->lampiran as $no => $item)
                             <tr>
                                 <td>{{ $no+1 }}</td>
-                                <td>{{ $item->nama }}</td>
+                                <td class="fw-semibold">{{ $item->nama }}</td>
                                 <td>
                                     @if ($item->file)
                                     @php
-                                        // Get the filename only, in lowercase
                                         $filename = strtolower(basename($item->file));
-
-                                        // Extract extension
                                         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-                                        // Check if image
                                         $isImage = in_array($ext, ['jpg','jpeg','png','gif','webp']);
                                     @endphp
 
                                     @if($isImage)
-                                            <img src="{{ asset($item->file) }}" alt="Lampiran" class="img-thumbnail" style="max-width:150px;">
-                                        @elseif($ext === 'pdf')
-                                            <a href="{{ asset($item->file) }}" class="btn btn-success btn-sm" target="_blank">Lihat PDF</a>
-                                        @else
-                                            <a href="{{ asset($item->file) }}" class="btn btn-secondary btn-sm" target="_blank">Lihat File</a>
-                                        @endif
+                                        <img src="{{ asset($item->file) }}" alt="Lampiran" class="rounded" style="max-width:100px; max-height:60px; object-fit:cover;">
+                                    @elseif($ext === 'pdf')
+                                        <a href="{{ asset($item->file) }}" class="btn btn-admin btn-admin-success btn-admin-sm" target="_blank">
+                                            <i class="fas fa-file-pdf"></i> Lihat PDF
+                                        </a>
+                                    @else
+                                        <a href="{{ asset($item->file) }}" class="btn btn-admin btn-admin-info btn-admin-sm" target="_blank">
+                                            <i class="fas fa-file"></i> Lihat File
+                                        </a>
                                     @endif
-
+                                    @endif
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $item->id }}">
-                                        <i class="bx bx-edit"></i>
-                                    </button>
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Edit Lampiran</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                                </button>
-                                            </div>
-                                                <form action="{{ route('agenda.update_lampiran') }}" method="post" enctype="multipart/form-data">
-                                                    @csrf
-                                                    <div class="modal-body">
-                                                            <label for="">Nama Lampiran</label>
-                                                            <input class="form-control" type="text" name="nama">
-                                                            <label class="mt-3" for="">Lampiran</label>
-                                                            <input class="form-control" type="file" name="lampiran" accept="image/*,.pdf">
+                                    <div class="d-flex gap-1">
+                                        <!-- Edit Lampiran -->
+                                        <button type="button" class="btn btn-admin btn-admin-warning btn-admin-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <!-- Edit Modal -->
+                                        <div class="modal fade modal-modern" id="editModal{{$item->id}}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Edit Lampiran</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <input type="hidden" name="id_lampiran" value="{{ $item->id }}">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                                        <button type="submit" class="btn btn-primary">Update Lampiran</button>
-                                                    </div>
-                                                </form>
+                                                    <form action="{{ route('agenda.update_lampiran') }}" method="post" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label class="form-label-modern">Nama Lampiran</label>
+                                                                <input class="form-control-modern w-100" type="text" name="nama" value="{{ $item->nama }}">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label-modern">File Lampiran</label>
+                                                                <input class="form-control-modern w-100" type="file" name="lampiran" accept="image/*,.pdf">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="hidden" name="id_lampiran" value="{{ $item->id }}">
+                                                            <button type="button" class="btn btn-admin" style="background:#e5e7eb;color:#333;" data-bs-dismiss="modal">Tutup</button>
+                                                            <button type="submit" class="btn btn-admin btn-admin-primary">
+                                                                <i class="fas fa-save"></i> Update
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalHapus{{ $item->id }}">
-                                        <i class="bx bx-trash"></i>
-                                    </button>
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModalHapus{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Edit Lampiran</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                                </button>
-                                            </div>
-                                                <form action="{{ route('agenda.hapus_lampiran',['id_lampiran' => $item->id]) }}" method="GET">
-                                                    <div class="modal-body">
-                                                        <p>Apakah anda yakin ingin menghapus Lampiran ini?</p>
+                                        
+                                        <!-- Hapus Lampiran -->
+                                        <button type="button" class="btn btn-admin btn-admin-danger btn-admin-sm" data-bs-toggle="modal" data-bs-target="#hapusModal{{ $item->id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <!-- Hapus Modal -->
+                                        <div class="modal fade modal-modern" id="hapusModal{{$item->id}}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background: linear-gradient(135deg, #ea4335, #d33426);">
+                                                        <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Hapus</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <input type="hidden" name="agenda_id" value="{{ $agenda->id }}">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                                        <button type="submit" class="btn btn-danger">Hapus</button>
-                                                    </div>
-                                                </form>
+                                                    <form action="{{ route('agenda.hapus_lampiran',['id_lampiran' => $item->id]) }}" method="GET">
+                                                        <div class="modal-body">
+                                                            <p class="mb-0">Apakah anda yakin ingin menghapus lampiran <strong>{{ $item->nama }}</strong>?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="hidden" name="agenda_id" value="{{ $agenda->id }}">
+                                                            <button type="button" class="btn btn-admin" style="background:#e5e7eb;color:#333;" data-bs-dismiss="modal">Batal</button>
+                                                            <button type="submit" class="btn btn-admin btn-admin-danger">
+                                                                <i class="fas fa-trash"></i> Hapus
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -174,9 +188,6 @@
                     </tbody>
                 </table>
             </div>
-            
-
         </div>
-
     </div>
 @endsection

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" 
+      xmlns:w="urn:schemas-microsoft-com:office:word" 
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Dokumentasi Fitur Aplikasi - Kelurahan Kebonsari</title>
+<style>
+ body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #333; line-height: 1.5; margin: 60px; }
+ h1 { color: #0D47A1; font-size: 22pt; border-bottom: 2px solid #0D47A1; padding-bottom: 8px; margin-top: 30px; }
+ h2 { color: #1A73E8; font-size: 16pt; margin-top: 25px; }
+ h3 { color: #333; font-size: 13pt; margin-top: 20px; }
+ p { margin-bottom: 6pt; text-align: justify; }
+ table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+ th { background: #1A73E8; color: white; padding: 8px; text-align: center; font-weight: bold; }
+ td { border: 1px solid #ccc; padding: 6px; }
+ ul, ol { margin-top: 4px; }
+ li { margin-bottom: 3px; }
+ .cover { text-align: center; padding-top: 150px; }
+ .cover h1 { font-size: 28pt; border: none; }
+ .cover h3 { font-size: 26pt; color: #34A853; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+<h1>DOKUMENTASI FITUR APLIKASI</h1>
+<h2 style="font-size:22pt;color:#1A73E8;">SISTEM INFORMASI PELAYANAN</h2>
+<h3>KELURAHAN KEBONSARI</h3>
+<p style="font-size:14pt;color:#666;text-align:center;">Kota Surabaya</p>
+<p style="font-size:11pt;color:#999;text-align:center;">Laravel 12</p>
+</div>
+<div style="page-break-after:always;"></div>
+
+<!-- DAFTAR ISI -->
+<h1>DAFTAR ISI</h1>
+<ol>
+<li>Pendahuluan</li>
+<li>Arsitektur Aplikasi</li>
+<li>Fitur Halaman Publik (Frontend)</li>
+<li>Fitur Admin Panel (Backend)</li>
+<li>Sistem Autentikasi dan Otorisasi</li>
+<li>Keamanan</li>
+<li>Database dan Migrasi</li>
+<li>Tampilan dan Desain UI</li>
+<li>Cara Instalasi dan Konfigurasi</li>
+</ol>
+<div style="page-break-after:always;"></div>
+
+<!-- BAB 1 -->
+<h1>1. Pendahuluan</h1>
+<p>Sistem Informasi Pelayanan Kelurahan Kebonsari adalah aplikasi berbasis web yang dibangun menggunakan framework Laravel 12. Aplikasi ini bertujuan untuk memberikan kemudahan bagi masyarakat Kelurahan Kebonsari, Kecamatan Sukolilo, Kota Surabaya dalam mengakses informasi dan layanan publik secara digital.</p>
+<p>Aplikasi ini memiliki dua sisi utama: Halaman Publik yang dapat diakses oleh semua pengunjung tanpa login, dan Admin Panel yang digunakan oleh perangkat kelurahan untuk mengelola konten dan data.</p>
+<p><b>Fitur utama aplikasi meliputi:</b></p>
+<ul>
+<li>Navigasi layanan publik per kategori dan sektor</li>
+<li>Pencarian layanan dengan kata kunci</li>
+<li>Tampilan detail layanan dengan persyaratan, poster, video tutorial, dan flyer</li>
+<li>Informasi umum dan agenda kelurahan</li>
+<li>Pencatatan kunjungan pengunjung (visitor)</li>
+<li>Admin dashboard dengan grafik statistik interaktif (Chart.js)</li>
+<li>Manajemen konten: layanan, info, agenda, pengunjung, user</li>
+<li>Sistem role-based access control (RBAC)</li>
+<li>Autentikasi lengkap: login, register, reset password, verifikasi email</li>
+</ul>
+<div style="page-break-after:always;"></div>
+
+<!-- BAB 2 -->
+<h1>2. Arsitektur Aplikasi</h1>
+<p>Aplikasi dibangun dengan arsitektur MVC (Model-View-Controller) Laravel 12.</p>
+<h2>2.1 Teknologi yang Digunakan</h2>
+<table>
+<tr><th>Komponen</th><th>Teknologi</th></tr>
+<tr><td>Backend</td><td>Laravel 12 (PHP 8.2+)</td></tr>
+<tr><td>Frontend</td><td>Blade Template, Bootstrap 5, Chart.js, DataTables, Summernote</td></tr>
+<tr><td>Database</td><td>MySQL / MariaDB</td></tr>
+<tr><td>UI Icons</td><td>Font Awesome 6</td></tr>
+<tr><td>Font</td><td>Google Fonts (Inter, Poppins)</td></tr>
+<tr><td>Build Tool</td><td>Vite</td></tr>
+</table>
+<h2>2.2 Struktur Direktori</h2>
+<ul>
+<li><b>app/Http/Controllers/Admin/</b> - Controller untuk halaman admin</li>
+<li><b>app/Http/Controllers/Web/</b> - Controller untuk halaman publik</li>
+<li><b>app/Models/</b> - Model Eloquent (User, Roles, Layanan, Visitor, Agenda, dll)</li>
+<li><b>app/Providers/AppServiceProvider.php</b> - View composer untuk menu</li>
+<li><b>app/Helpers/global.php</b> - Helper functions</li>
+<li><b>app/Rules/SafeInput.php</b> - Validasi input</li>
+<li><b>resources/views/</b> - Blade views</li>
+<li><b>routes/</b> - Route definitions</li>
+<li><b>database/migrations/</b> - Migrasi database</li>
+<li><b>database/seeders/</b> - Data seeder</li>
+</ul>
+<div style="page-break-after:always;"></div>
+
+<!-- BAB 3 -->
+<h1>3. Fitur Halaman Publik (Frontend)</h1>
+<p>Halaman publik dapat diakses oleh siapa saja tanpa perlu login.</p>
+<h3>3.1 Halaman Beranda (Landing Page)</h3>
+<p>Route: GET / (name: index). Hero section gradient biru-hijau, navbar sticky, modal input data diri, footer dengan sosial media. Animasi fade-in-up.</p>
+<h3>3.2 Pencarian Layanan</h3>
+<p>Route: POST /layanan. Visitor isi data diri di modal, data disimpan ke session. Tampilan layanan populer dan form pencarian. Route GET /search-layanan untuk mencari berdasarkan kata kunci.</p>
+<h3>3.3 Detail Layanan dan Persyaratan</h3>
+<p>Route: GET /layanan/detail/{id}. Nama layanan, kategori, persyaratan, flyer poster, video tutorial. Visitor otomatis tercatat di tabel visitors.</p>
+<h3>3.4 Informasi Umum dan Agenda</h3>
+<p>Route: GET /informasi-umum. Menampilkan agenda terbaru dalam card. Route detail untuk lihat lampiran.</p>
+<h3>3.5 Video Tutorial dan Flyer</h3>
+<p>Video dari Google Drive. Dua kategori: SSW ALFA (PDF tutorial) dan KNG (video MP4 via proxy).</p>
+<h3>3.6 Proxy Video Google Drive</h3>
+<p>Route: GET /video-proxy/{fileId}. Streaming video dari Google Drive via PHP cURL. Timeout 300 detik.</p>
+<div style="page-break-after:always;"></div>
+
+<!-- BAB 4 -->
+<h1>4. Fitur Admin Panel (Backend)</h1>
+<p>Route /dashboard/* dengan middleware auth dan verified.</p>
+<h3>4.1 Dashboard dan Grafik</h3>
+<p>4 kartu statistik (User, Layanan, Agenda, Pengunjung), 3 grafik Chart.js (line pengunjung, doughnut kategori, bar layanan populer), tabel pengunjung dan agenda terbaru.</p>
+<h3>4.2 Manajemen User</h3>
+<p>Route: /dashboard/users. CRUD user, ubah role via dropdown (Super Admin, Admin).</p>
+<h3>4.3 Manajemen Layanan</h3>
+<p>Route: /dashboard/layanan. CRUD lengkap: kategori, sektor, nama, video URL, poster, persyaratan dinamis. Validasi SafeInput, ekstraksi Google Drive ID.</p>
+<h3>4.4 Manajemen Info</h3>
+<p>Route: /dashboard/info. Summernote WYSIWYG editor. Satu record (ID 1).</p>
+<h3>4.5 Manajemen Pengunjung</h3>
+<p>Route: /dashboard/pengunjung. Tab per tahun, filter bulan, ekspor Excel (.xls).</p>
+<h3>4.6 Manajemen Agenda dan Lampiran</h3>
+<p>Route: /dashboard/agenda. CRUD agenda + lampiran (upload, edit, hapus gambar/PDF). Database transaction.</p>
+<div style="page-break-after:always;"></div>
+
+<!-- BAB 5 -->
+<h1>5. Sistem Autentikasi dan Otorisasi</h1>
+<p>Menggunakan Laravel Breeze: register, login, logout, reset password, verifikasi email, konfirmasi password, update password.</p>
+<h2>5.1 Role-Based Access Control (RBAC)</h2>
+<p>Tabel roles, menus, role_to_menu. View composer membagikan menu sesuai role. Setiap user memiliki role_id.</p>
+<div style="page-break-after:always;"></div>
+
+<!-- BAB 6 -->
+<h1>6. Keamanan</h1>
+<ul>
+<li>CSRF Protection pada semua form</li>
+<li>XSS Prevention: SafeInput rule dan sanitizeString() helper</li>
+<li>SQL Injection: Eloquent ORM</li>
+<li>Middleware auth dan verified untuk admin</li>
+<li>Validasi file upload (gambar/PDF, max 2MB)</li>
+<li>HTTP-only session cookies</li>
+<li>Database transactions</li>
+<li>Error logging</li>
+</ul>
+<div style="page-break-after:always;"></div>
+
+<!-- BAB 7 -->
+<h1>7. Database dan Migrasi</h1>
+<table>
+<tr><th>Nama Tabel</th><th>Deskripsi</th></tr>
+<tr><td>users</td><td>Data user, password, email, role_id</td></tr>
+<tr><td>roles</td><td>Daftar role (Super Admin, Admin)</td></tr>
+<tr><td>menus</td><td>Menu navigasi admin</td></tr>
+<tr><td>role_to_menu</td><td>Relasi many-to-many role-menu</td></tr>
+<tr><td>layanan</td><td>Data layanan (kategori, sektor, nama, video, poster)</td></tr>
+<tr><td>persyaratan</td><td>Persyaratan per layanan</td></tr>
+<tr><td>flyer</td><td>File flyer per layanan</td></tr>
+<tr><td>visitors</td><td>Data kunjungan (nama, alamat, id_layanan, klik_app)</td></tr>
+<tr><td>agenda</td><td>Data agenda (nama, foto_cover, narasi)</td></tr>
+<tr><td>agenda_lampiran</td><td>Lampiran agenda</td></tr>
+<tr><td>info</td><td>Konten info halaman</td></tr>
+</table>
+<div style="page-break-after:always;"></div>
+
+<!-- BAB 8 -->
+<h1>8. Tampilan dan Desain UI</h1>
+<h3>8.1 Tema Publik</h3>
+<p>Warna biru (#1a73e8) dan hijau (#34a853). Font Inter dan Poppins. Hero gradient, card modern border-radius 16px, animasi fade-in-up.</p>
+<h3>8.2 Tema Admin</h3>
+<p>Sidebar gradient biru, top navbar sticky, card statistik berwarna, tabel header uppercase, btn-admin custom, modal gradient, alert auto-hide, responsive mobile.</p>
+<div style="page-break-after:always;"></div>
+
+<!-- BAB 9 -->
+<h1>9. Cara Instalasi dan Konfigurasi</h1>
+<ol>
+<li>Clone project</li>
+<li>Copy .env: copy .env.example .env</li>
+<li>Konfigurasi database di .env</li>
+<li>composer install</li>
+<li>php artisan key:generate</li>
+<li>php artisan migrate</li>
+<li>php artisan db:seed --class=DummyDataSeeder</li>
+<li>php artisan storage:link</li>
+<li>npm install && npm run build</li>
+<li>php artisan serve</li>
+<li>Akses http://127.0.0.1:8000</li>
+<li>Login: superadmin@kebonsari.com / password</li>
+</ol>
+
+</body>
+</html>

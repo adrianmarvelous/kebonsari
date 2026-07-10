@@ -3,25 +3,26 @@
 
 @section('content')
 
-    <div class="container-fluid card shadow">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="mt-4">Info</h1>
-            </div>
+    <div class="card-modern">
+        <div class="card-header-custom">
+            <h5><i class="fas fa-info-circle text-primary me-2"></i>Info Halaman</h5>
         </div>
-        <div class="row">
+        <div class="card-body-custom">
             <form action="{{ route('info.update',['info' => 1]) }}" method="POST">
                 @csrf
                 @method('PUT') 
-                <div class="col-md-12 mb-5">
+                <div class="mb-3">
+                    <label class="form-label-modern">Konten Info</label>
                     <textarea id="summernote" name="info">{{ old('info', $info->info ?? '') }}</textarea>
-                    
-                    <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary">Simpan</button>
-                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-admin btn-admin-primary">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
                 </div>
             </form>
         </div>
+    </div>
 @endsection
 
 

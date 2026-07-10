@@ -65,7 +65,56 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // Dashboard main page
     Route::get('/', function () {
-        return view('admin.dashboard');
+        $totalUsers = \App\Models\User::count();
+        $totalLayanan = \App\Models\Layanan::count();
+        $totalAgenda = \App\Models\Agenda::count();
+        $totalPengunjung = \App\Models\Visitor::count();
+
+        $latestVisitors = \App\Models\Visitor::with('layanan')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        $latestAgendas = \App\Models\Agenda::orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // ── Chart: Pengunjung per bulan (6 bulan terakhir) ──
+        $bulanLabels = [];
+        $bulanData = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $date = \Carbon\Carbon::now()->subMonths($i);
+            $bulanLabels[] = $date->isoFormat('MMM Y');
+            $bulanData[] = \App\Models\Visitor::whereMonth('created_at', $date->month)
+                ->whereYear('created_at', $date->year)
+                ->count();
+        }
+
+        // ── Chart: Layanan per kategori ──
+        $kategoriLabels = \App\Models\Layanan::selectRaw('kategori, COUNT(*) as total')
+            ->groupBy('kategori')
+            ->pluck('total', 'kategori');
+        $kategoriLabelArr = $kategoriLabels->keys()->toArray();
+        $kategoriDataArr = $kategoriLabels->values()->toArray();
+
+        // ── Chart: Pengunjung per layanan (top 5) ──
+        $layananPopuler = \App\Models\Visitor::selectRaw('id_layanan, COUNT(*) as total')
+            ->groupBy('id_layanan')
+            ->orderByDesc('total')
+            ->take(5)
+            ->get();
+        $layananLabelArr = $layananPopuler->map(function ($v) {
+            return $v->layanan->nama_layanan ?? 'Unknown';
+        })->toArray();
+        $layananDataArr = $layananPopuler->pluck('total')->toArray();
+
+        return view('admin.dashboard', compact(
+            'totalUsers', 'totalLayanan', 'totalAgenda', 'totalPengunjung',
+            'latestVisitors', 'latestAgendas',
+            'bulanLabels', 'bulanData',
+            'kategoriLabelArr', 'kategoriDataArr',
+            'layananLabelArr', 'layananDataArr'
+        ));
     })->name('dashboard');
 
     // Grouped resource routes

@@ -9,6 +9,7 @@ use App\Models\Agenda_lampiran;
 use App\Rules\SafeInput;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AgendaController extends Controller
 {
@@ -203,7 +204,8 @@ class AgendaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $agenda = Agenda::with('lampiran')->findOrFail($id);
+        return view('admin.agenda.edit', compact('agenda'));
     }
 
     /**
@@ -211,7 +213,45 @@ class AgendaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'nama_agenda' => ['required', 'string', 'max:255', new SafeInput],
+            'file' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048', new SafeInput],
+            'narasi'   => ['required', 'string', 'max:50000'],
+        ]);
+
+        $agenda = Agenda::findOrFail($id);
+        DB::beginTransaction();
+
+        try {
+            // Handle file upload if new file is provided
+            if ($request->hasFile('file')) {
+                $mime = $request->file('file')->getMimeType();
+                if (!str_starts_with($mime, 'image/')) {
+                    return back()->with('error', 'File harus berupa gambar!');
+                }
+
+                // Hapus foto lama
+                if ($agenda->foto_cover && file_exists(public_path($agenda->foto_cover))) {
+                    unlink(public_path($agenda->foto_cover));
+                }
+
+                $fileName = time() . '.' . $request->file('file')->extension();
+                $request->file('file')->move(public_path('uploads/agenda/cover'), $fileName);
+                $agenda->foto_cover = 'uploads/agenda/cover/' . $fileName;
+            }
+
+            $agenda->nama_agenda = $validated['nama_agenda'];
+            $agenda->narasi      = $validated['narasi'];
+            $agenda->save();
+
+            DB::commit();
+            return redirect()
+                ->route('agenda.show', $agenda->id)
+                ->with('success', 'Agenda berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -219,6 +259,29 @@ class AgendaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $agenda = Agenda::with('lampiran')->findOrFail($id);
+
+            // Hapus semua lampiran dan file-nya
+            foreach ($agenda->lampiran as $lampiran) {
+                if ($lampiran->file && file_exists(public_path($lampiran->file))) {
+                    unlink(public_path($lampiran->file));
+                }
+                $lampiran->delete();
+            }
+
+            // Hapus foto cover
+            if ($agenda->foto_cover && file_exists(public_path($agenda->foto_cover))) {
+                unlink(public_path($agenda->foto_cover));
+            }
+
+            $agenda->delete();
+            DB::commit();
+            return redirect()->route('agenda.index')->with('success', 'Agenda berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal menghapus agenda: ' . $e->getMessage());
+        }
     }
 }

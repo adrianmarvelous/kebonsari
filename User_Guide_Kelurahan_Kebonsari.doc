@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" 
+      xmlns:w="urn:schemas-microsoft-com:office:word" 
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>User Guide - Sistem Informasi Pelayanan Kelurahan Kebonsari</title>
+<style>
+ body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #333; line-height: 1.5; margin: 50px 70px; }
+ h1 { color: #0D47A1; font-size: 20pt; border-bottom: 2px solid #0D47A1; padding-bottom: 6px; margin-top: 28px; }
+ h2 { color: #1A73E8; font-size: 15pt; margin-top: 22px; }
+ h3 { color: #333; font-size: 12pt; margin-top: 18px; }
+ h4 { color: #1A73E8; font-size: 11pt; margin-top: 14px; }
+ p { margin-bottom: 6pt; text-align: justify; }
+ table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+ th { background: #1A73E8; color: white; padding: 7px 8px; text-align: center; font-weight: bold; font-size: 10pt; }
+ td { border: 1px solid #bbb; padding: 5px 8px; font-size: 10pt; vertical-align: top; }
+ ul, ol { margin-top: 3px; margin-bottom: 6px; }
+ li { margin-bottom: 3px; }
+ .cover { text-align: center; padding-top: 120px; }
+ .cover h1 { font-size: 26pt; border: none; color: #0D47A1; margin-bottom: 10px; }
+ .cover h2 { font-size: 18pt; color: #1A73E8; border: none; margin-bottom: 8px; }
+ .cover h3 { font-size: 22pt; color: #34A853; border: none; margin-bottom: 30px; }
+ .cover p { text-align: center; }
+ .note { background: #E8F0FE; border-left: 4px solid #1A73E8; padding: 10px 14px; margin: 12px 0; font-size: 10pt; }
+ .warning { background: #FEF3E2; border-left: 4px solid #FBBC04; padding: 10px 14px; margin: 12px 0; font-size: 10pt; }
+ .tip { background: #E6F4EA; border-left: 4px solid #34A853; padding: 10px 14px; margin: 12px 0; font-size: 10pt; }
+ .step { margin-bottom: 4px; }
+ .code { font-family: Consolas, monospace; background: #f5f5f5; padding: 1px 4px; font-size: 10pt; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+<h1>USER GUIDE</h1>
+<h2>SISTEM INFORMASI PELAYANAN</h2>
+<h3>KELURAHAN KEBONSARI</h3>
+<p style="font-size:14pt;color:#666;">Kota Surabaya</p>
+<p style="font-size:11pt;color:#999;margin-top:30px;">Laravel 12 | Bootstrap 5 | MySQL</p>
+<p style="font-size:10pt;color:#aaa;margin-top:60px;">Dokumen ini berisi panduan lengkap penggunaan aplikasi<br>baik untuk Pengguna Umum (Publik) maupun Administrator.</p>
+</div>
+<div style="page-break-after:always;"></div>
+
+<!-- ===== DAFTAR ISI ===== -->
+<h1>DAFTAR ISI</h1>
+<ol>
+<li><b>Pendahuluan</b><ol>
+<li>Tentang Aplikasi</li>
+<li>Akses ke Aplikasi</li>
+<li>Persyaratan Sistem</li>
+</ol></li>
+<li><b>Panduan untuk Pengguna Umum (Publik)</b><ol>
+<li>Membuka Halaman Utama</li>
+<li>Mengisi Data Diri (Modal)</li>
+<li>Memilih Kategori Layanan</li>
+<li>Mencari Layanan</li>
+<li>Melihat Detail Layanan</li>
+<li>Mengakses Aplikasi Eksternal (Klik App)</li>
+<li>Melihat Informasi Umum dan Agenda</li>
+<li>Melakukan Pencarian Layanan</li>
+</ol></li>
+<li><b>Panduan untuk Administrator</b><ol>
+<li>Login ke Admin Panel</li>
+<li>Dashboard Admin</li>
+<li>Manajemen User</li>
+<li>Manajemen Layanan</li>
+<li>Manajemen Info</li>
+<li>Manajemen Pengunjung</li>
+<li>Manajemen Agenda</li>
+<li>Manajemen Lampiran Agenda</li>
+<li>Profile dan Logout</li>
+</ol></li>
+<li><b>Struktur Menu dan Hak Akses</b></li>
+<li><b>Pemecahan Masalah (Troubleshooting)</b></li>
+</ol>
+<div style="page-break-after:always;"></div>
+
+<!-- ================================================================ -->
+<!-- BAB 1: PENDAHULUAN -->
+<!-- ================================================================ -->
+<h1>1. Pendahuluan</h1>
+
+<h2>1.1 Tentang Aplikasi</h2>
+<p><b>Sistem Informasi Pelayanan Kelurahan Kebonsari</b> adalah aplikasi berbasis web yang dibangun untuk mempermudah masyarakat Kelurahan Kebonsari, Kecamatan Sukolilo, Kota Surabaya dalam mengakses informasi dan layanan publik. Aplikasi ini juga menyediakan panel admin bagi perangkat kelurahan untuk mengelola konten dan data secara terpusat.</p>
+
+<p>Aplikasi ini memiliki dua sisi utama:</p>
+<table>
+<tr><th style="width:25%;">Sisi</th><th style="width:75%;">Deskripsi</th></tr>
+<tr><td><b>Halaman Publik</b></td><td>Dapat diakses oleh siapa saja tanpa login. Masyarakat dapat melihat layanan, persyaratan, tutorial video, informasi umum, dan agenda kelurahan.</td></tr>
+<tr><td><b>Admin Panel</b></td><td>Khusus untuk administrator yang sudah login. Digunakan untuk mengelola data layanan, user, agenda, info halaman, dan data pengunjung.</td></tr>
+</table>
+
+<h2>1.2 Akses ke Aplikasi</h2>
+<table>
+<tr><th style="width:30%;">Jenis Akses</th><th style="width:40%;">URL</th><th style="width:30%;">Keterangan</th></tr>
+<tr><td>Halaman Publik</td><td><span class="code">http://127.0.0.1:8000/</span></td><td>Tanpa login</td></tr>
+<tr><td>Halaman Login Admin</td><td><span class="code">http://127.0.0.1:8000/login</span></td><td>Perlu akun</td></tr>
+<tr><td>Admin Dashboard</td><td><span class="code">http://127.0.0.1:8000/dashboard</span></td><td>Setelah login</td></tr>
+</table>
+
+<h2>1.3 Persyaratan Sistem</h2>
+<ul>
+<li>Browser modern (Google Chrome 90+, Mozilla Firefox 88+, Microsoft Edge 90+)</li>
+<li>Koneksi internet untuk memuat font, ikon, dan library eksternal</li>
+<li>Resolusi layar minimal 1024 x 768 pixel</li>
+<li>JavaScript aktif (untuk DataTables, Chart.js, Summernote)</li>
+</ul>
+
+<div style="page-break-after:always;"></div>
+
+<!-- ================================================================ -->
+<!-- BAB 2: PANDUAN PENGGUNA UMUM -->
+<!-- ================================================================ -->
+<h1>2. Panduan untuk Pengguna Umum (Publik)</h1>
+<p>Bagian ini menjelaskan bagaimana masyarakat umum menggunakan aplikasi untuk mengakses layanan dan informasi Kelurahan Kebonsari.</p>
+
+<h2>2.1 Membuka Halaman Utama</h2>
+<p><b>Langkah-langkah:</b></p>
+<ol>
+<li>Buka browser dan akses <span class="code">http://127.0.0.1:8000/</span></li>
+<li>Halaman utama (Landing Page) akan tampil dengan:</li>
+<ul>
+<li><b>Navbar</b> di bagian atas dengan logo dan menu: Beranda, Pelayanan, Informasi</li>
+<li><b>Hero Section</b> dengan latar gradient biru-hijau, teks sambutan, dan dua tombol: "Akses Pelayanan" dan "Informasi Umum"</li>
+<li><b>Footer</b> dengan informasi kontak, link cepat, dan sosial media</li>
+</ul>
+</ol>
+
+<div class="note">
+<b>Catatan:</b> Halaman utama didesain responsif. Pada layar kecil (mobile), navbar akan berubah menjadi toggle menu (hamburger menu).
+</div>
+
+<h2>2.2 Mengisi Data Diri (Modal)</h2>
+<p>Sebelum mengakses layanan, pengunjung harus mengisi data diri terlebih dahulu melalui modal.</p>
+<p><b>Langkah-langkah:</b></p>
+<ol>
+<li>Klik tombol <b>"Akses Pelayanan"</b> pada hero section atau menu <b>"Pelayanan"</b> di navbar</li>
+<li>Akan muncul modal <b>"Data Diri"</b> dengan dua field:</li>
+<ul>
+<li><b>Nama Lengkap</b> - Masukkan nama Anda</li>
+<li><b>Alamat</b> - Masukkan alamat Anda</li>
+</ul>
+<li>Klik tombol <b>"Lanjutkan"</b> untuk melanjutkan, atau <b>"Tutup"</b> untuk membatalkan</li>
+<li>Data akan disimpan ke session browser selama Anda berada di website</li>
+</ol>
+
+<div class="tip">
+<b>Tips:</b> Setelah mengisi data diri, Anda tidak perlu mengisi ulang selama masih dalam sesi yang sama. Untuk menghapus sesi, klik tombol logout sesi di halaman layanan.
+</div>
+
+<h2>2.3 Memilih Kategori Layanan</h2>
+<p>Setelah mengisi data diri, Anda akan diarahkan ke halaman daftar layanan.</p>
+<p><b>Langkah-langkah:</b></p>
+<ol>
+<li>Halaman menampilkan <b>layanan populer</b> berupa kartu-kartu dengan ikon dan judul</li>
+<li>Gulir ke bawah untuk melihat <b>kategori layanan</b> yang tersedia (contoh: Kependudukan, Perizinan, Kesehatan, Sosial, Pajak)</li>
+<li>Klik salah satu kategori untuk melihat daftar layanan dalam kategori tersebut</li>
+<li>Halaman akan menampilkan layanan-layanan dalam kategori yang dipilih beserta tombol "Lihat Detail"</li>
+</ol>
+
+<h2>2.4 Mencari Layanan</h2>
+<p>Jika Anda mencari layanan tertentu, gunakan fitur pencarian:</p>
+<ol>
+<li>Pada halaman daftar layanan, terdapat field <b>pencarian</b></li>
+<li>Ketik kata kunci layanan yang dicari (misal: "KTP", "KK", "Akta")<br>
+<i>Akan muncul saran layanan yang cocok dengan kata kunci (autocomplete)</i></li>
+<li>Klik tombol <b>Cari</b> atau tekan Enter</li>
+<li>Sistem akan mencari layanan yang cocok dan menampilkan hasilnya</li>
+<li>Jika ditemukan satu layangan yang tepat, Anda akan langsung diarahkan ke halaman detail</li>
+</ol>
+
+<div class="warning">
+<b>Peringatan:</b> Jika layer yang Anda cari tidak ditemukan, sistem akan menampilkan daftar layanan serupa atau pesan bahwa layanan tidak tersedia.
+</div>
+
+<h2>2.5 Melihat Detail Layanan</h2>
+<p>Halaman detail layanan menampilkan informasi lengkap tentang suatu layanan.</p>
+<p><b>Informasi yang ditampilkan:</b></p>
+<ul>
+<li><b>Nama Layanan</b> - Judul layanan yang sedang dilihat</li>
+<li><b>Kategori</b> - Badge kategori layanan (misal: Kependudukan, Perizinan)</li>
+<li><b>Persyaratan</b> - Daftar dokumen atau syarat yang harus dipenuhi (ditampilkan dalam kotak dengan aksen warna biru di kiri)</li>
+<li><b>Flyer Informasi</b> - Poster/gambar informatif tentang layanan (jika tersedia)</li>
+<li><b>Tutorial Video</b> - Video panduan cara mengurus layanan (jika tersedia)<br>
+<i>Video di-streaming dari Google Drive melalui proxy server</i></li>
+<li><b>Tombol Aplikasi Eksternal</b> - Tautan ke aplikasi terkait (jika ada)</li>
+</ul>
+
+<div class="note">
+<b>Catatan:</b> Saat Anda mengakses halaman detail layanan, sistem secara otomatis mencatat kunjungan Anda ke database untuk keperluan statistik.
+</div>
+
+<h2>2.6 Mengakses Aplikasi Eksternal (Klik App)</h2>
+<p>Beberapa layanan memiliki tautan ke aplikasi eksternal seperti SSW ALFA atau aplikasi Dinas Kependudukan dan Pencatatan Sipil.</p>
+<ol>
+<li>Pada halaman detail layanan, cari tombol <b>"Klik Aplikasi"</b></li>
+<li>Klik tombol tersebut untuk membuka aplikasi eksternal di tab baru</li>
+<li>Sistem akan mencatat bahwa Anda telah mengklik aplikasi tersebut</li>
+</ol>
+
+<h2>2.7 Melihat Informasi Umum dan Agenda</h2>
+<p>Halaman informasi umum menampilkan agenda-agenda terbaru Kelurahan Kebonsari.</p>
+<p><b>Langkah-langkah:</b></p>
+<ol>
+<li>Klik menu <b>"Informasi"</b> di navbar atau tombol <b>"Informasi Umum"</b> di hero section</li>
+<li>Halaman akan menampilkan 3 agenda terbaru dalam bentuk kartu (card) dengan:</li>
+<ul>
+<li><b>Foto cover</b> agenda</li>
+<li><b>Judul</b> agenda</li>
+<li><b>Tanggal</b> publikasi</li>
+<li>Tombol <b>"Selengkapnya"</b></li>
+</ul>
+<li>Klik "Selengkapnya" pada salah satu agenda untuk melihat detail lengkap</li>
+<li>Halaman detail menampilkan:</li>
+<ul>
+<li>Nama agenda</li>
+<li>Narasi / deskripsi agenda</li>
+<li>Foto cover (ukuran besar)</li>
+<li><b>Lampiran</b> - File pendukung (gambar atau PDF) yang dapat di-download atau dilihat</li>
+</ul>
+</ol>
+
+<h2>2.8 Melakukan Pencarian Layanan</h2>
+<p>Selain dari halaman layanan, Anda juga dapat mencari layanan dari halaman utama:</p>
+<ol>
+<li>Pada navbar, klik menu <b>"Pelayanan"</b></li>
+<li>Isi data diri pada modal yang muncul</li>
+<li>Setelah masuk ke halaman layanan, gunakan form pencarian di bagian atas</li>
+<li>Ketik kata kunci dan klik tombol cari</li>
+</ol>
+
+<div style="page-break-after:always;"></div>
+
+<!-- ================================================================ -->
+<!-- BAB 3: PANDUAN ADMINISTRATOR -->
+<!-- ================================================================ -->
+<h1>3. Panduan untuk Administrator</h1>
+<p>Bagian ini menjelaskan cara menggunakan Admin Panel untuk mengelola konten dan data aplikasi.</p>
+
+<h2>3.1 Login ke Admin Panel</h2>
+<p><b>Langkah-langkah:</b></p>
+<ol>
+<li>Buka browser dan akses <span class="code">http://127.0.0.1:8000/login</span></li>
+<li>Masukkan <b>Email</b> dan <b>Password</b> yang sudah terdaftar</li>
+<li>Klik tombol <b>"Log in"</b></li>
+<li>Jika berhasil, Anda akan diarahkan ke halaman <b>Dashboard</b></li>
+</ol>
+
+<p><b>Akun bawaan (dari seeder):</b></p>
+<table>
+<tr><th>Role</th><th>Email</th><th>Password</th></tr>
+<tr><td>Super Admin</td><td>superadmin@kebonsari.com</td><td>password</td></tr>
+<tr><td>Admin</td><td>admin@kebonsari.com</td><td>password</td></tr>
+</table>
+
+<div class="warning">
+<b>Peringatan:</b> Segera ganti password setelah login pertama kali untuk keamanan.
+</div>
+
+<h2>3.2 Dashboard Admin</h2>
+<p>Halaman dashboard adalah halaman utama setelah login. Diakses melalui <span class="code">/dashboard</span>.</p>
+<p><b>Komponen Dashboard:</b></p>
+
+<h3>3.2.1 Kartu Statistik</h3>
+<p>Terdapat 4 kartu statistik di bagian atas:</p>
+<table>
+<tr><th>Kartu</th><th>Ikon</th><th>Warna</th><th>Menampilkan</th></tr>
+<tr><td>Total User</td><td><span class="code">fas fa-users</span></td><td>Biru</td><td>Jumlah seluruh user terdaftar</td></tr>
+<tr><td>Total Layanan</td><td><span class="code">fas fa-handshake</span></td><td>Hijau</td><td>Jumlah layanan yang tersedia</td></tr>
+<tr><td>Total Agenda</td><td><span class="code">fas fa-calendar-alt</span></td><td>Oranye</td><td>Jumlah agenda yang sudah dibuat</td></tr>
+<tr><td>Total Pengunjung</td><td><span class="code">fas fa-user-check</span></td><td>Ungu</td><td>Jumlah total pengunjung website</td></tr>
+</table>
+
+<h3>3.2.2 Grafik Interaktif</h3>
+<table>
+<tr><th>Grafik</th><th>Jenis</th><th>Fungsi</th></tr>
+<tr><td>Pengunjung 6 Bulan Terakhir</td><td>Line Chart</td><td>Menampilkan tren kunjungan per bulan dalam 6 bulan terakhir</td></tr>
+<tr><td>Layanan per Kategori</td><td>Doughnut Chart</td><td>Menampilkan distribusi jumlah layanan berdasarkan kategori</td></tr>
+<tr><td>Layanan Terpopuler</td><td>Bar Chart (Horizontal)</td><td>Menampilkan 5 layanan yang paling banyak dikunjungi</td></tr>
+</table>
+
+<h3>3.2.3 Tabel Data Terbaru</h3>
+<ul>
+<li><b>Pengunjung Terbaru</b> - Menampilkan 5 pengunjung terakhir dengan nama, layanan, dan tanggal</li>
+<li><b>Agenda Terbaru</b> - Menampilkan 5 agenda terbaru dengan judul dan tanggal</li>
+</ul>
+
+<h2>3.3 Manajemen User</h2>
+<p>Route: <span class="code">/dashboard/users</span></p>
+<p>Halaman ini menampilkan daftar semua user yang terdaftar.</p>
+<p><b>Fitur:</b></p>
+<ul>
+<li><b>Melihat daftar user</b> - Tabel menampilkan nomor, nama, email, dan role</li>
+<li><b>Mengubah role user</b> - Pilih role baru dari dropdown pada kolom "Role", konfirmasi perubahan</li>
+</ul>
+
+<div class="note">
+<b>Catatan:</b> Fitur ini hanya untuk mengubah role. Untuk manajemen user lengkap (create, edit, delete), pengembangan lebih lanjut diperlukan.
+</div>
+
+<h2>3.4 Manajemen Layanan</h2>
+<p>Route: <span class="code">/dashboard/layanan</span></p>
+<p>Fitur CRUD (Create, Read, Update, Delete) untuk data layanan.</p>
+
+<h3>3.4.1 Melihat Daftar Layanan</h3>
+<p>Halaman index menampilkan tabel dengan kolom: No, Sektor, Layanan, dan Aksi. Gunakan DataTables untuk mencari, mengurutkan, dan memfilter data.</p>
+
+<h3>3.4.2 Menambah Layanan Baru</h3>
+<p><b>Langkah-langkah:</b></p>
+<ol>
+<li>Klik tombol <b>"Buat Layanan Baru"</b></li>
+<li>Isi form dengan data berikut:</li>
+<ul>
+<li><b>Kategori</b> - Pilih kategori dari dropdown (Kependudukan, Perizinan, dll)</li>
+<li><b>Sektor</b> - Pilih sektor dari dropdown</li>
+<li><b>Nama Layanan</b> - Masukkan nama layanan</li>
+<li><b>Google Drive Video</b> - Masukkan URL video dari Google Drive (opsional)<br>
+<i>Sistem akan otomatis mengekstrak ID video dari URL</i></li>
+<li><b>Poster</b> - Upload gambar poster (opsional, format: jpg, jpeg, png, gif, max 2MB)</li>
+<li><b>Persyaratan</b> - Masukkan persyaratan layanan:</li>
+<ul>
+<li>Klik <b>"Tambah Persyaratan"</b> untuk menambah field baru</li>
+<li>Klik ikon <b>tong sampah</b> untuk menghapus field</li>
+<li>Minimal 1 persyaratan harus diisi</li>
+</ul>
+</ul>
+<li>Klik tombol <b>"Simpan"</b> untuk menyimpan</li>
+</ol>
+
+<h3>3.4.3 Melihat Detail Layanan</h3>
+<p>Klik tombol <b>"Detail"</b> pada tabel untuk melihat informasi lengkap layanan: kategori, sektor, nama, video, poster, dan daftar persyaratan.</p>
+
+<h3>3.4.4 Mengedit Layanan</h3>
+<p>Pada halaman detail, klik tombol <b>"Edit"</b> untuk mengubah data layanan. Form akan terisi dengan data yang sudah ada.</p>
+
+<h3>3.4.5 Menghapus Layanan</h3>
+<p>Fitur delete dapat diakses dari route DELETE <span class="code">/dashboard/layanan/{id}</span>.</p>
+
+<h2>3.5 Manajemen Info</h2>
+<p>Route: <span class="code">/dashboard/info</span></p>
+<p>Halaman ini digunakan untuk mengelola konten informasi umum yang ditampilkan di halaman publik.</p>
+<p><b>Langkah-langkah:</b></p>
+<ol>
+<li>Buka halaman Info dari sidebar menu</li>
+<li>Gunakan <b>Summernote Editor</b> (WYSIWYG) untuk menulis atau mengedit konten</li>
+<li>Toolbar Summernote menyediakan: style, bold, italic, underline, font name, font size, color, list, table, link, gambar, video, fullscreen, code view, help</li>
+<li>Klik tombol <b>"Simpan"</b> untuk menyimpan perubahan</li>
+</ol>
+
+<div class="tip">
+<b>Tips:</b> Gunakan tombol <b>Code View</b> pada Summernote untuk melihat atau mengedit langsung kode HTML jika diperlukan.
+</div>
+
+<h2>3.6 Manajemen Pengunjung</h2>
+<p>Route: <span class="code">/dashboard/pengunjung</span></p>
+<p>Halaman ini menampilkan data pengunjung website secara terperinci.</p>
+<p><b>Fitur:</b></p>
+<ul>
+<li><b>Tab Tahun</b> - Menampilkan data pengunjung per tahun</li>
+<li><b>Filter Bulan</b> - Pilih bulan untuk melihat data spesifik</li>
+<li><b>Tabel Data</b> - Menampilkan: No, Nama, Alamat, Layanan yang dikunjungi, Tanggal kunjungan</li>
+<li><b>Ekspor Excel</b> - Klik tombol "Export Excel" untuk mengunduh data dalam format .xls</li>
+</ul>
+
+<div class="note">
+<b>Catatan:</b> Data pengunjung dicatat secara otomatis saat seseorang mengakses halaman detail layanan di website publik.
+</div>
+
+<h2>3.7 Manajemen Agenda</h2>
+<p>Route: <span class="code">/dashboard/agenda</span></p>
+<p>Fitur CRUD untuk agenda dan kegiatan Kelurahan Kebonsari.</p>
+
+<h3>3.7.1 Melihat Daftar Agenda</h3>
+<p>Halaman index menampilkan tabel: No, Nama Agenda, Foto (thumbnail), Tanggal, dan Aksi. DataTables untuk pencarian dan pengurutan.</p>
+
+<h3>3.7.2 Menambah Agenda Baru</h3>
+<p><b>Langkah-langkah:</b></p>
+<ol>
+<li>Klik tombol <b>"Buat Agenda Baru"</b></li>
+<li>Isi form:</li>
+<ul>
+<li><b>Nama Agenda</b> - Judul agenda</li>
+<li><b>Foto Cover</b> - Upload gambar cover (format: jpg, jpeg, png, gif, max 2MB)</li>
+<li><b>Narasi</b> - Deskripsi agenda menggunakan Summernote editor</li>
+</ul>
+<li>Klik <b>"Simpan"</b></li>
+<li>Setelah tersimpan, Anda akan diarahkan ke halaman detail agenda</li>
+</ol>
+
+<h3>3.7.3 Melihat Detail Agenda</h3>
+<p>Menampilkan: nama agenda, foto cover (ukuran besar), narasi lengkap, dan daftar lampiran.</p>
+
+<h3>3.7.4 Mengedit Agenda</h3>
+<p>Klik tombol <b>"Edit"</b> pada tabel daftar agenda untuk mengubah data agenda.</p>
+
+<h3>3.7.5 Menghapus Agenda</h3>
+<p>Klik tombol <b>"Hapus"</b> pada tabel. Akan muncul konfirmasi sebelum penghapusan.</p>
+
+<h2>3.8 Manajemen Lampiran Agenda</h2>
+<p>Lampiran dapat ditambahkan, diedit, dan dihapus dari halaman detail agenda.</p>
+
+<h3>3.8.1 Upload Lampiran Baru</h3>
+<p><b>Langkah-langkah:</b></p>
+<ol>
+<li>Pada halaman detail agenda, klik tombol <b>"Upload Lampiran"</b></li>
+<li>Akan muncul modal dengan dua field:</li>
+<ul>
+<li><b>Nama Lampiran</b> - Nama atau keterangan file</li>
+<li><b>File Lampiran</b> - Pilih file (format: gambar JPG/PNG/GIF atau PDF, max 2MB)</li>
+</ul>
+<li>Klik <b>"Upload"</b> untuk mengunggah</li>
+</ol>
+
+<h3>3.8.2 Mengedit Lampiran</h3>
+<p>Klik tombol <b>"Edit"</b> (ikon pensil) pada baris lampiran di tabel. Modal akan muncul untuk mengubah nama atau mengganti file.</p>
+
+<h3>3.8.3 Menghapus Lampiran</h3>
+<p>Klik tombol <b>"Hapus"</b> (ikon tong sampah). Konfirmasi akan muncul sebelum penghapusan. File fisik juga akan dihapus dari server.</p>
+
+<h2>3.9 Profile dan Logout</h2>
+<p><b>Mengakses Profile:</b></p>
+<ul>
+<li>Klik nama user di pojok kanan atas navbar untuk membuka dropdown</li>
+<li>Dari sini Anda dapat <b>Log Out</b></li>
+</ul>
+
+<p><b>Logout:</b> Klik "Log Out" pada dropdown user di navbar, atau klik tombol logout di sidebar footer.</p>
+
+<div style="page-break-after:always;"></div>
+
+<!-- ================================================================ -->
+<!-- BAB 4: STRUKTUR MENU DAN HAK AKSES -->
+<!-- ================================================================ -->
+<h1>4. Struktur Menu dan Hak Akses</h1>
+
+<h2>4.1 Menu Publik (Tanpa Login)</h2>
+<table>
+<tr><th>Menu</th><th>Route</th><th>Deskripsi</th></tr>
+<tr><td>Beranda</td><td>/</td><td>Halaman utama landing page</td></tr>
+<tr><td>Pelayanan</td><td>/layanan (POST)</td><td>Daftar layanan publik (perlu isi data diri)</td></tr>
+<tr><td>Informasi</td><td>/informasi-umum</td><td>Informasi umum dan agenda</td></tr>
+</table>
+
+<h2>4.2 Menu Admin (Setelah Login)</h2>
+<table>
+<tr><th>Menu</th><th>Route</th><th>Deskripsi</th><th>Akses</th></tr>
+<tr><td>Dashboard</td><td>/dashboard</td><td>Dashboard utama dengan statistik dan grafik</td><td>Semua Admin</td></tr>
+<tr><td>User</td><td>/dashboard/users</td><td>Manajemen user dan role</td><td>Super Admin</td></tr>
+<tr><td>Layanan</td><td>/dashboard/layanan</td><td>CRUD data layanan</td><td>Semua Admin</td></tr>
+<tr><td>Info</td><td>/dashboard/info</td><td>Edit konten info halaman</td><td>Semua Admin</td></tr>
+<tr><td>Pengunjung</td><td>/dashboard/pengunjung</td><td>Lihat dan ekspor data pengunjung</td><td>Semua Admin</td></tr>
+<tr><td>Agenda</td><td>/dashboard/agenda</td><td>CRUD agenda dan lampiran</td><td>Semua Admin</td></tr>
+</table>
+
+<h2>4.3 Role dan Hak Akses</h2>
+<table>
+<tr><th>Role</th><th>Kemampuan</th></tr>
+<tr><td><b>Super Admin</b></td><td>Akses penuh ke semua fitur termasuk manajemen user dan perubahan role</td></tr>
+<tr><td><b>Admin</b></td><td>Akses ke semua fitur manajemen konten (layanan, info, agenda, pengunjung), tidak dapat mengelola user</td></tr>
+</table>
+
+<div style="page-break-after:always;"></div>
+
+<!-- ================================================================ -->
+<!-- BAB 5: TROUBLESHOOTING -->
+<!-- ================================================================ -->
+<h1>5. Pemecahan Masalah (Troubleshooting)</h1>
+
+<table>
+<tr><th style="width:30%;">Masalah</th><th style="width:40%;">Penyebab</th><th style="width:30%;">Solusi</th></tr>
+
+<tr>
+<td>Halaman tidak ditemukan (404)</td>
+<td>URL yang diakses salah atau route tidak terdaftar</td>
+<td>Periksa kembali URL. Pastikan Anda sudah login untuk halaman admin.</td>
+</tr>
+
+<tr>
+<td>Halaman dashboard kosong / putih</td>
+<td>Kesalahan pada view Blade atau cache usang</td>
+<td>Jalankan: <span class="code">php artisan view:clear</span> dan <span class="code">php artisan cache:clear</span></td>
+</tr>
+
+<tr>
+<td>Tidak bisa login</td>
+<td>Email atau password salah, atau akun belum terverifikasi</td>
+<td>Periksa kembali email dan password. Gunakan fitur "Forgot Password" jika lupa.</td>
+</tr>
+
+<tr>
+<td>DataTables tidak berfungsi</td>
+<td>Library JavaScript tidak termuat atau konflik jQuery</td>
+<td>Periksa koneksi internet. Refresh halaman (CTRL+F5).</td>
+</tr>
+
+<tr>
+<td>Summernote tidak muncul</td>
+<td>jQuery atau Summernote JS tidak termuat dengan benar</td>
+<td>Refresh halaman. Pastikan koneksi internet stabil.</td>
+</tr>
+
+<tr>
+<td>Grafik dashboard tidak tampil</td>
+<td>Chart.js tidak termuat atau data kosong</td>
+<td>Pastikan ada data pengunjung dan layanan di database. Jalankan seeder jika perlu.</td>
+</tr>
+
+<tr>
+<td>Upload file gagal</td>
+<td>Ukuran file melebihi 2MB atau format tidak didukung</td>
+<td>Periksa ukuran dan format file. Maksimal 2MB, format: JPG, PNG, GIF, atau PDF.</td>
+</tr>
+
+<tr>
+<td>Error "419 Page Expired"</td>
+<td>CSRF token tidak valid, session expired</td>
+<td>Refresh halaman dan coba lagi. Login ulang jika diperlukan.</td>
+</tr>
+
+<tr>
+<td>Video tidak bisa diputar</td>
+<td>Google Drive ID tidak valid atau proxy error</td>
+<td>Periksa URL video di halaman edit layanan. Pastikan ID Google Drive benar.</td>
+</tr>
+
+<tr>
+<td>Foto tidak muncul</td>
+<td>Path file salah atau storage link tidak dibuat</td>
+<td>Jalankan: <span class="code">php artisan storage:link</span></td>
+</tr>
+
+<tr>
+<td>Data tidak muncul setelah input</td>
+<td>Validasi gagal atau database transaction rollback</td>
+<td>Periksa pesan error. Pastikan semua field required terisi dengan benar.</td>
+</tr>
+
+<tr>
+<td>Session visitor hilang</td>
+<td>Session expired atau browser ditutup</td>
+<td>Isi ulang data diri melalui modal "Akses Pelayanan".</td>
+</tr>
+
+</table>
+
+<div style="page-break-after:always;"></div>
+
+<!-- ================================================================ -->
+<!-- LAMPIRAN -->
+<!-- ================================================================ -->
+<h1>Lampiran: Daftar Route Aplikasi</h1>
+
+<table>
+<tr><th>Method</th><th>URL</th><th>Nama Route</th><th>Keterangan</th></tr>
+
+<tr><td>GET</td><td>/</td><td>index</td><td>Halaman utama publik</td></tr>
+<tr><td>POST</td><td>/layanan</td><td>web.layanan.index</td><td>Daftar layanan (setelah isi data diri)</td></tr>
+<tr><td>GET</td><td>/layanan/{sektor}</td><td>web.layanan.sektor</td><td>Layanan per kategori/sektor</td></tr>
+<tr><td>GET</td><td>/layanan/detail/{id}</td><td>web.layanan.detail</td><td>Detail layanan publik</td></tr>
+<tr><td>GET</td><td>/layanan/detail/{id}/klik_app</td><td>web.layanan.klik_app</td><td>Klik aplikasi eksternal</td></tr>
+<tr><td>GET</td><td>/search-layanan</td><td>web.layanan.search</td><td>Pencarian layanan</td></tr>
+<tr><td>GET</td><td>/video-proxy/{fileId}</td><td>video.proxy</td><td>Proxy streaming video Google Drive</td></tr>
+<tr><td>GET</td><td>/informasi-umum</td><td>web.informasi_umum</td><td>Informasi umum dan agenda</td></tr>
+<tr><td>GET</td><td>/informasi-umum/detail/{id}</td><td>web.informasi_umum.detail</td><td>Detail agenda publik</td></tr>
+<tr><td>POST</td><td>/visitor/session/destroy</td><td>visitor.session.destroy</td><td>Hapus session visitor</td></tr>
+
+<tr><td colspan="4" style="background:#E8F0FE; font-weight:bold;">Admin (perlu login)</td></tr>
+
+<tr><td>GET</td><td>/dashboard</td><td>dashboard</td><td>Dashboard admin</td></tr>
+<tr><td>GET</td><td>/dashboard/users</td><td>users.index</td><td>Daftar user</td></tr>
+<tr><td>PATCH</td><td>/dashboard/users/{user}/role</td><td>users.update_role</td><td>Ubah role user</td></tr>
+<tr><td>GET</td><td>/dashboard/layanan</td><td>layanan.index</td><td>Daftar layanan</td></tr>
+<tr><td>GET</td><td>/dashboard/layanan/create</td><td>layanan.create</td><td>Form tambah layanan</td></tr>
+<tr><td>POST</td><td>/dashboard/layanan</td><td>layanan.store</td><td>Simpan layanan baru</td></tr>
+<tr><td>GET</td><td>/dashboard/layanan/{layanan}</td><td>layanan.show</td><td>Detail layanan</td></tr>
+<tr><td>GET</td><td>/dashboard/layanan/{layanan}/edit</td><td>layanan.edit</td><td>Form edit layanan</td></tr>
+<tr><td>PUT/PATCH</td><td>/dashboard/layanan/{layanan}</td><td>layanan.update</td><td>Update layanan</td></tr>
+<tr><td>DELETE</td><td>/dashboard/layanan/{layanan}</td><td>layanan.destroy</td><td>Hapus layanan</td></tr>
+<tr><td>GET</td><td>/dashboard/info</td><td>info.index</td><td>Edit info halaman</td></tr>
+<tr><td>PUT</td><td>/dashboard/info/{info}</td><td>info.update</td><td>Simpan info halaman</td></tr>
+<tr><td>GET</td><td>/dashboard/pengunjung</td><td>pengunjung.index</td><td>Data pengunjung</td></tr>
+<tr><td>GET</td><td>/dashboard/pengunjung/export_excel/{bulan}/{tahun}</td><td>pengunjung.export_excel</td><td>Ekspor Excel pengunjung</td></tr>
+<tr><td>GET</td><td>/dashboard/agenda</td><td>agenda.index</td><td>Daftar agenda</td></tr>
+<tr><td>GET</td><td>/dashboard/agenda/create</td><td>agenda.create</td><td>Form tambah agenda</td></tr>
+<tr><td>POST</td><td>/dashboard/agenda</td><td>agenda.store</td><td>Simpan agenda baru</td></tr>
+<tr><td>GET</td><td>/dashboard/agenda/{agenda}</td><td>agenda.show</td><td>Detail agenda</td></tr>
+<tr><td>GET</td><td>/dashboard/agenda/{agenda}/edit</td><td>agenda.edit</td><td>Form edit agenda</td></tr>
+<tr><td>PUT/PATCH</td><td>/dashboard/agenda/{agenda}</td><td>agenda.update</td><td>Update agenda</td></tr>
+<tr><td>DELETE</td><td>/dashboard/agenda/{agenda}</td><td>agenda.destroy</td><td>Hapus agenda</td></tr>
+<tr><td>POST</td><td>/dashboard/agenda/upload_lampiran</td><td>agenda.upload_lampiran</td><td>Upload lampiran agenda</td></tr>
+<tr><td>POST</td><td>/dashboard/agenda/update_lampiran</td><td>agenda.update_lampiran</td><td>Update lampiran agenda</td></tr>
+<tr><td>GET</td><td>/dashboard/agenda/hapus_lampiran/{id_lampiran}</td><td>agenda.hapus_lampiran</td><td>Hapus lampiran agenda</td></tr>
+</table>
+
+<p style="text-align:center; margin-top:40px; color:#999; font-size:10pt;">
+--- Akhir Dokumen ---<br>
+Dokumen ini dibuat secara otomatis pada 10 July 2026
+</p>
+
+</body>
+</html>

@@ -16,39 +16,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->get(); // Returns a collection of all users
+        $users = User::with('role')->get();
         $roles = Roles::all();
-        // dd($users);
-        return view('admin.users.index',compact('users','roles')); // Assuming you have a view for listing services
-    }
-    public function updateRole(Request $request)
-    {
-        $validated = $request->validate([
-            'user_id' => ['required', new SafeInput],
-            'role_id' => ['required', new SafeInput],
-        ]);
-        $user_id = $validated['user_id'];
-        $role_id = $validated['role_id'];
-
-        DB::beginTransaction();
-        
-        try {
-            $user = User::findOrFail($user_id);
-            $user->role_id = $role_id;
-            $user->save();
-
-            DB::commit(); // commit transaction
-
-            return redirect()
-                ->route('users.index')
-                ->with('success', 'Role updated successfully');
-        } catch (\Exception $e) {
-            DB::rollBack(); // rollback transaction
-
-            return redirect()
-                ->route('users.index')
-                ->with('error', 'Failed to update role: ' . $e->getMessage());
-        }
+        return view('admin.users.index', compact('users', 'roles'));
     }
 
     /**
@@ -56,7 +26,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Roles::all();
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -64,7 +35,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name'     => ['required', 'string', 'max:255', new SafeInput],
+            'email'    => ['required', 'email', 'max:255', 'unique:users', new SafeInput],
+            'password' => ['required', 'string', 'min:6', new SafeInput],
+            'role_id'  => ['required', 'integer', 'exists:roles,id', new SafeInput],
+        ]);
+
+        DB::beginTransaction();
+        try {
+            User::create([
+                'name'     => $validated['name'],
+                'email'    => $validated['email'],
+                'password' => bcrypt($validated['password']),
+                'role_id'  => $validated['role_id'],
+                'email_verified_at' => now(),
+            ]);
+            DB::commit();
+            return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal menambah user: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -80,7 +72,9 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $roles = Roles::all();
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -88,7 +82,30 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'name'     => ['required', 'string', 'max:255', new SafeInput],
+            'email'    => ['required', 'email', 'max:255', 'unique:users,email,' . $id, new SafeInput],
+            'password' => ['nullable', 'string', 'min:6', new SafeInput],
+            'role_id'  => ['required', 'integer', 'exists:roles,id', new SafeInput],
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $user->name    = $validated['name'];
+            $user->email   = $validated['email'];
+            $user->role_id = $validated['role_id'];
+            if (!empty($validated['password'])) {
+                $user->password = bcrypt($validated['password']);
+            }
+            $user->save();
+            DB::commit();
+            return redirect()->route('users.index')->with('success', 'User berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal mengupdate user: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -96,6 +113,35 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+            DB::commit();
+            return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal menghapus user: ' . $e->getMessage());
+        }
+    }
+
+    public function updateRole(Request $request)
+    {
+        $validated = $request->validate([
+            'user_id' => ['required', 'integer', 'exists:users,id', new SafeInput],
+            'role_id' => ['required', 'integer', 'exists:roles,id', new SafeInput],
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail($validated['user_id']);
+            $user->role_id = $validated['role_id'];
+            $user->save();
+            DB::commit();
+            return redirect()->route('users.index')->with('success', 'Role berhasil diubah.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('users.index')->with('error', 'Gagal mengubah role: ' . $e->getMessage());
+        }
     }
 }

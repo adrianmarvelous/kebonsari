@@ -120,16 +120,13 @@ class LayananController extends Controller
      */
     public function show($id)
     {
-        $validator = Validator::make(
-            ['id' => $id], // data to validate
-            ['id' => ['required', 'integer', new SafeInput]] // rules
-        );
+        Validator::make(
+            ['id' => $id],
+            ['id' => ['required', 'integer', new SafeInput]]
+        )->validate();
 
         $layanan = Layanan::with('persyaratan')->findOrFail($id);
-        $kategori = Layanan::select('kategori')->distinct()->get();
-        $sektor = Layanan::select('sektor')->distinct()->get();
-
-        return view('admin.layanan.detail', compact('layanan','kategori','sektor'));
+        return view('admin.layanan.detail', compact('layanan'));
     }
 
     /**
@@ -234,6 +231,29 @@ class LayananController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Validator::make(
+            ['id' => $id],
+            ['id' => ['required', 'integer', new SafeInput]]
+        )->validate();
+
+        DB::beginTransaction();
+        try {
+            $layanan = Layanan::with('persyaratan')->findOrFail($id);
+
+            // Hapus persyaratan terkait
+            $layanan->persyaratan()->delete();
+
+            // Hapus poster jika ada
+            if ($layanan->poster && \Storage::disk('public')->exists($layanan->poster)) {
+                \Storage::disk('public')->delete($layanan->poster);
+            }
+
+            $layanan->delete();
+            DB::commit();
+            return redirect()->route('layanan.index')->with('success', 'Layanan berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('layanan.index')->with('error', 'Gagal menghapus layanan: ' . $e->getMessage());
+        }
     }
 }
