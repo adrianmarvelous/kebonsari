@@ -75,7 +75,7 @@ class LayananController extends Controller
             return redirect()->route('index');
         }
         $layanan = Layanan::with('persyaratan')->where('kategori', $sektor)->get();
-        $semua_layanan = Layanan::pluck('nama_layanan')->toArray();
+        $semua_layanan = Layanan::select('id','nama_layanan')->get();
         return view('web.layanan.sektor', compact('layanan', 'sektor','semua_layanan'));
     }
     public function detail($id)

@@ -1,202 +1,204 @@
 @extends('index')
 
 @section('content')
-    <style>
-        /* ============================
-               CUSTOM DATALIST (MOBILE)
-               ============================ */
-        .custom-datalist {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            max-height: 220px;
-            overflow-y: auto;
-            display: none;
-            z-index: 9999;
-        }
+<style>
+    .custom-datalist {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        max-height: 220px;
+        overflow-y: auto;
+        display: none;
+        z-index: 9999;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .custom-datalist div {
+        padding: 12px 16px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .custom-datalist div:hover {
+        background: #f1f5f9;
+    }
+    #reader video {
+        width: 100% !important;
+        height: auto !important;
+    }
+    .populer-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px 16px;
+        text-align: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: var(--dark);
+        display: block;
+        min-width: 110px;
+    }
+    .populer-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 30px rgba(26, 115, 232, 0.1);
+        color: var(--primary);
+        text-decoration: none;
+    }
+    .populer-card .icon-wrap {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        font-size: 1.4rem;
+        color: white;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    }
+    .sector-btn {
+        display: block;
+        width: 100%;
+        padding: 16px 24px;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-align: left;
+        background: white;
+        color: var(--dark);
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        margin-bottom: 12px;
+    }
+    .sector-btn:hover {
+        background: var(--primary-light);
+        color: var(--primary);
+        border-color: var(--primary);
+        transform: translateX(4px);
+        text-decoration: none;
+    }
+    .sector-btn i {
+        margin-right: 12px;
+        color: var(--primary);
+    }
+</style>
 
-        .custom-datalist div {
-            padding: 10px 12px;
-            cursor: pointer;
-        }
+<div class="row justify-content-center">
+    <div class="col-lg-10">
 
-        .custom-datalist div:hover {
-            background: #eee;
-        }
-    </style>
-    <style>
-        #reader video {
-            width: 100% !important;
-            height: auto !important;
-        }
-    </style>
-
-    <div class="p-3 card shadow m-3">
-
-        {{-- ========================
-         FORM SEARCH
-       ======================== --}}
-        <form id="formLayanan" action="{{ route('web.layanan.search') }}" method="GET">
-            <div class="position-relative mb-3">
-                <input type="text" id="layananInput" name="layanan" class="form-control" placeholder="Cari layanan...">
-                <div id="datalistOptions" class="custom-datalist"></div>
-            </div>
-        </form>
-
-        {{-- ========================
-         PELAYANAN TERPOPULER
-       ======================== --}}
-        <div>
-            <h1 class="text-center">Pelayanan Terpopuler</h1>
-            <div class="d-flex justify-content-center flex-wrap">
-                @foreach ($layanan_populer as $item)
-                    <div class="text-center m-1">
-                        <a class="btn btn-primary" href="{{ route($item['route'], $item['params']) }}">
-                            <i class="{{ $item['icon'] }} fa-3x"></i>
-                        </a>
-                        <div style="width: 100px">
-                            <p class="text-wrap small fs-md-6 fs-lg-5">{{ $item['judul'] }}</p>
-                        </div>
+        {{-- SEARCH --}}
+        <div class="card-modern card mb-4" style="position: relative; z-index: 10;">
+            <div class="card-body">
+                <h4 class="fw-bold mb-1"><i class="fas fa-search text-primary me-2"></i>Cari Layanan</h4>
+                <p class="text-muted mb-3">Ketik nama layanan yang Anda cari</p>
+                <form id="formLayanan" action="{{ route('web.layanan.search') }}" method="GET">
+                    <div class="position-relative">
+                        <input type="text" id="layananInput" name="layanan" class="form-control form-control-lg" placeholder="Cari layanan..." style="border-radius: 14px; padding-left: 48px;">
+                        <i class="fas fa-search" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--gray);"></i>
+                        <div id="datalistOptions" class="custom-datalist"></div>
                     </div>
-                @endforeach
-
+                </form>
             </div>
         </div>
 
-        {{-- ========================
-    PELACAKAN TANPA KAMERA
-======================== --}}
-        <div class="mt-4">
-            <h1 class="text-center">Pelacakan</h1>
-
-            <button class="btn btn-primary w-100" id="scanBtn">PELACAKAN LAYANAN</button>
-
-            <div id="uploadArea" style="display:none; text-align:center; margin-top:15px;">
-                <input type="file" id="qrImage" accept="image/*" style="display:none;">
-                <input type="file" id="qrPdf" accept="application/pdf" style="display:none;">
-
-                <button class="btn btn-secondary btn-sm m-1" id="btnImage">Upload Gambar QR</button>
-                {{-- <button class="btn btn-info btn-sm m-1" id="btnPdf">Upload PDF QR</button> --}}
+        {{-- PELAYANAN TERPOPULER --}}
+        <div class="card-modern card mb-4">
+            <div class="card-body">
+                <h4 class="fw-bold mb-1"><i class="fas fa-star text-warning me-2"></i>Pelayanan Terpopuler</h4>
+                <p class="text-muted mb-4">Layanan yang paling sering diakses</p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    @foreach ($layanan_populer as $item)
+                        <a class="populer-card" href="{{ route($item['route'], $item['params']) }}">
+                            <div class="icon-wrap">
+                                <i class="{{ $item['icon'] }}"></i>
+                            </div>
+                            <p class="fw-semibold mb-0" style="font-size: 0.85rem;">{{ $item['judul'] }}</p>
+                        </a>
+                    @endforeach
+                </div>
             </div>
-
-            <p class="mt-2">Result: <span id="result"></span></p>
         </div>
 
+        {{-- PELACAKAN --}}
+        <div class="card-modern card mb-4">
+            <div class="card-body">
+                <h4 class="fw-bold mb-1"><i class="fas fa-qrcode text-success me-2"></i>Pelacakan Layanan</h4>
+                <p class="text-muted mb-3">Scan QR code untuk melacak status layanan Anda</p>
+                <button class="btn btn-success w-100 py-3" id="scanBtn" style="border-radius: 14px; font-weight: 600;">
+                    <i class="fas fa-camera me-2"></i>PELACAKAN LAYANAN
+                </button>
+                <div id="uploadArea" style="display:none; text-align:center; margin-top:16px;">
+                    <input type="file" id="qrImage" accept="image/*" style="display:none;">
+                    <button class="btn btn-outline-secondary px-4" id="btnImage" style="border-radius: 12px;">
+                        <i class="fas fa-upload me-2"></i>Upload Gambar QR
+                    </button>
+                    <p class="mt-3">Result: <span id="result" class="fw-semibold"></span></p>
+                </div>
+            </div>
+        </div>
 
-        {{-- ========================
-         SEKTOR
-       ======================== --}}
-        <div class="mt-4">
-            <h1 class="text-center">Pilih Sektor Pelayanan</h1>
-
-            <div class="d-flex flex-column mt-3">
+        {{-- SEKTOR --}}
+        <div class="card-modern card mb-4">
+            <div class="card-body">
+                <h4 class="fw-bold mb-1"><i class="fas fa-tags text-primary me-2"></i>Pilih Sektor Pelayanan</h4>
+                <p class="text-muted mb-3">Pilih kategori layanan yang Anda butuhkan</p>
                 @foreach ($sektor as $value)
-                    <a href="{{ route('web.layanan.sektor', ['sektor' => $value->kategori]) }}"
-                        class="btn btn-primary mb-2">
-                        {{ $value->kategori }}
+                    <a href="{{ route('web.layanan.sektor', ['sektor' => $value->kategori]) }}" class="sector-btn">
+                        <i class="fas fa-folder-open"></i>{{ $value->kategori }}
                     </a>
                 @endforeach
             </div>
         </div>
 
     </div>
+</div>
 
-    {{-- ============================
-     JAVASCRIPT AUTOCOMPLETE
-   ============================ --}}
-    <script>
-        // Data layanan dari backend
-        const data = @json($semua_layanan);
+<script>
+    const data = @json($semua_layanan);
+    const input = document.getElementById("layananInput");
+    const datalist = document.getElementById("datalistOptions");
+    const form = document.getElementById("formLayanan");
 
-        const input = document.getElementById("layananInput");
-        const datalist = document.getElementById("datalistOptions");
-        const form = document.getElementById("formLayanan");
-
-        input.addEventListener("input", function() {
-
-            const value = this.value.toLowerCase();
-            datalist.innerHTML = "";
-
-            if (value === "") {
-                datalist.style.display = "none";
-                return;
-            }
-
-            // FILTER: hanya berdasarkan 'nama_layanan' layanan
-            const filtered = data.filter(item =>
-                item.nama_layanan.toLowerCase().includes(value)
-            );
-
-            if (filtered.length === 0) {
-                datalist.style.display = "none";
-                return;
-            }
-
-            filtered.forEach(item => {
-                const div = document.createElement("div");
-                div.textContent = item.nama_layanan;
-
-                // Jika dipilih → isi input → submit form
-                div.onclick = () => {
-                    input.value = item.nama_layanan;
-                    datalist.style.display = "none";
-                    form.submit();
-                };
-
-                datalist.appendChild(div);
-            });
-
-            datalist.style.display = "block";
+    input.addEventListener("input", function() {
+        const value = this.value.toLowerCase();
+        datalist.innerHTML = "";
+        if (value === "") { datalist.style.display = "none"; return; }
+        const filtered = data.filter(item => item.nama_layanan.toLowerCase().includes(value));
+        if (filtered.length === 0) { datalist.style.display = "none"; return; }
+        filtered.forEach(item => {
+            const div = document.createElement("div");
+            div.textContent = item.nama_layanan;
+            div.onclick = () => { input.value = item.nama_layanan; datalist.style.display = "none"; form.submit(); };
+            datalist.appendChild(div);
         });
-
-        // Klik luar → hide dropdown
-        document.addEventListener("click", function(e) {
-            if (!input.contains(e.target)) {
-                datalist.style.display = "none";
-            }
-        });
-    </script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
+        datalist.style.display = "block";
+    });
+    document.addEventListener("click", function(e) {
+        if (!input.contains(e.target)) datalist.style.display = "none";
+    });
+</script>
+<script src="https://unpkg.com/html5-qrcode"></script>
 <script type="module">
 import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.1.392/pdf.min.mjs";
 
-// DOM Elements
 const scanBtn   = document.getElementById("scanBtn");
 const uploadArea = document.getElementById("uploadArea");
-
 const qrImage = document.getElementById("qrImage");
-const qrPdf   = document.getElementById("qrPdf");
-
 const btnImage = document.getElementById("btnImage");
-const btnPdf   = document.getElementById("btnPdf");
-
 const resultBox = document.getElementById("result");
-
-// Instance html5-qrcode (wajib punya div)
 let html5QrCode = new Html5Qrcode("hiddenReaderDiv");
 
-
-// ===========================
-// TOGGLE TOMBOL UPLOAD
-// ===========================
 scanBtn.addEventListener("click", () => {
-    uploadArea.style.display =
-        uploadArea.style.display === "none" ? "block" : "none";
+    uploadArea.style.display = uploadArea.style.display === "none" ? "block" : "none";
 });
 
-
-// ===========================
-// UPLOAD GAMBAR
-// ===========================
 btnImage.onclick = () => qrImage.click();
 
 qrImage.addEventListener("change", async function () {
     if (this.files.length === 0) return;
-
     const file = this.files[0];
 
     try {

@@ -20,6 +20,37 @@ Route::get('/layanan/detail/{id}', [WebLayananController::class, 'detail'])->nam
 Route::get('/layanan/detail/{id}/klik_app', [WebLayananController::class, 'klik_app'])->name('web.layanan.klik_app');
 Route::get('/search-layanan', [WebLayananController::class, 'search'])->name('web.layanan.search');
 
+// Proxy Google Drive video agar bisa di-stream via HTML5 video player
+Route::get('/video-proxy/{fileId}', function ($fileId) {
+    $downloadUrl = 'https://drive.usercontent.google.com/download?id=' . urlencode($fileId) . '&export=download';
+
+    // Set timeout lebih lama untuk video besar
+    set_time_limit(300);
+
+    return response()->stream(function () use ($downloadUrl) {
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $downloadUrl,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_TIMEOUT => 300,
+            CURLOPT_RETURNTRANSFER => false,
+            CURLOPT_WRITEFUNCTION => function ($curl, $data) {
+                echo $data;
+                if (ob_get_level() > 0) ob_flush();
+                flush();
+                return strlen($data);
+            },
+        ]);
+        curl_exec($ch);
+        curl_close($ch);
+    }, 200, [
+        'Content-Type' => 'video/mp4',
+        'Content-Disposition' => 'inline',
+        'Cache-Control' => 'public, max-age=3600',
+    ]);
+})->name('video.proxy');
+
 Route::get('/informasi-umum', [InformasiUmumController::class, 'informasi_umum'])->name('web.informasi_umum');
 Route::get('/informasi-umum/detail/{id}', [InformasiUmumController::class, 'detail'])->name('web.informasi_umum.detail');
 
